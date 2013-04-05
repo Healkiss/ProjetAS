@@ -2,7 +2,7 @@
 	//declarations c
 	#include <stdlib.h>
 	#include <stdio.h>
-	#include "q1.tab.h"
+	#include "projet.tab.h"
 	int pos = 0;
 	int begin = 1;
 	int depth = 0; 
