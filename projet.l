@@ -11,13 +11,14 @@
  //declarations d'etats lex  
 
 %% 
- 
+
+\n {ECHO;return EOL;}
 [0-9]+ {ECHO;yylval = atoi(yytext);return NB;}
 "--" {ECHO;return SEPARATOR;}
- /*[+*] {ECHO;return yytext[0];}*/
-"," {ECHO;return yytext[0];}
-"(" {ECHO;return yytext[0];}
-")" {ECHO;return yytext[0];}
+[+*()-/,] {ECHO;return yytext[0];}
 "draw" {ECHO;return DRAW;}
 "fill" {ECHO;return FILL;}
+"cycle" {ECHO;return CYCLE;}
+";" {ECHO;return EOI;}
+
 %%  
