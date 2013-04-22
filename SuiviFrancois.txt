@@ -1,6 +1,29 @@
-bla
+22/4
+/// C ///
+Ajout des listes simplements chainées pour chaque type de variables
+-Coordonnee
+	Avec la variable globale GlobalListeCoor pour les stocker
+-Point
+	Avec la variable globale GlobalListePoint pour les stocker
+-Chemin
+	Avec la variable globale GlobalListeChemin pour les stocker
+	
+Ajout des fonctions necessaires a l'utilisation de liste simplement chainée (ajouter et afficher), seulement pour GlobalListeCoor pour le moment
 
-bla
+/// LEX ///
+Ajout de trois etats (declaration coordonnée, point, chemin)
 
-blabla
-blablabla
+/// BISON ///
+Essai de caster les $$ en char* pour passer des chaines aux fonctions (au lieu d'un YYSTYPE ) Mais en faisant un simple char * s = $1; tout les texte est pris.
+
+/// DIVERS ///
+Couleurs pour la console (differencier message d'erreur, informatif, succes ..)
+
+
+/// PROBLEMES A RESOUDRE ///
+ Amliorer grammaire pour l'affectation qui n'a pas l'air de fonctionner
+Passer des chaines pour par exemple envoyer le nom de la variable et la stocker
+
+/// SUITE ///
+Rajouter la gestion des 3 listes, faire une fonction de recherches dans ces listes pour trouver si la variable existe, la modifier ..
+

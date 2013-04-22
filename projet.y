@@ -1,20 +1,8 @@
  %{
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+#include "functions.h"
+firstPoint = 1;
+line = 0;
 
-//globals
-bool firstPoint = true;
-FILE *fres;
-
-//declarations
-void draw();
-void point(int, int);
-int premierpoint_x;
-int premierpoint_y;
-int pointprec_x;
-int pointprec_y;
 %}
  /*
  %union {
@@ -33,40 +21,73 @@ int pointprec_y;
 %token  FILL
 %token CYCLE
 %token SEPARATOR
-%token EOI
-%token EOL
+%token EOI //end of commande
+%token EOL //end of line
+%token VAR_COOR
+%token VAR_PT
+%token VAR_LIST
+%token VAR_NAME
 %left '+''-'
 %left '*' '/'
 %nonassoc UMINUS
 
 %%
-	input : input line
-			| line
+	input : input line {line++;}
+			| line {line++;}
 			;
 	
-	line : commande liste EOI EOL
+	line : commande {/*creer liste chaine*/;} liste EOI EOL {/*lire liste chaine*/;}
+			| definition EOI EOL{printf("%sdefinition termine%s \n", GREEN,WHITE);}
+			| affectation EOI EOL{printf("%saffectation termine%s \n", GREEN,WHITE);}
+			| error EOI EOL {printf("%serreur de variable%s\n", RED,WHITE);}
 			| EOL
-			| error EOL
+			;
+			
+	definition : VAR_COOR list_coor {/*instanciation coor*/}
+				| VAR_PT list_pt {/*instanciation pt*/}
+				| VAR_LIST list_list {/*instanciation list*/}
+				;
+	
+	list_coor : list_coor ',' VAR_NAME {/*instanciation coor*/printf("%s<<definition variable coor : %s >>%s\n", BLUE, $3, WHITE);char *s = $3;ajouterCoor(s,0);}
+					|  VAR_NAME {/*instanciation coor*/printf("%s<<definition variable coor : %s >>%s\n", BLUE, $1, WHITE);char *s  = $1;ajouterCoor(s,0);}
+					;
+					
+	list_pt : list_pt ',' VAR_NAME {/*instanciation pt*/printf("%s<<definition variable pt : %s >>%s\n", BLUE, $3, WHITE);}
+					|  VAR_NAME {/*instanciation list*/printf("%s<<definition variable pt : %s >>%s\n", BLUE, $1, WHITE);}
+					;
+					
+	list_list : list_list ',' VAR_NAME  {/*instanciation list*/printf("%s<<definition variable list : %s >>%s\n", BLUE, $3, WHITE);}
+					|  VAR_NAME {/*instanciation list*/printf("%s<<definition variable list : %s >>%s\n", BLUE, $1, WHITE);} 
+					;	
+					
+	affectation : VAR_NAME '=' value {/*lire liste chaine*/;printf("%s<<affectation variable : %s to %s >>%s\n", BLUE, $3, $1, WHITE);}
+				;
+		
+	value : NB
+			| point
+			| liste
 			;
 			
 	commande : DRAW {draw();}
 		| FILL {draw();}
-			;
+		| error {printf("%serreur de comande%s\n", RED,WHITE);}
+		;
 	
-	liste : point
+	liste : point {/*remplir liste chainee (dernier point)*/;}
 		| '+' translation
 		| cycle
-		| point SEPARATOR liste
-		| '+' translation SEPARATOR liste
-		| cycle SEPARATOR liste
-			;
+		| point {/*remplir liste chainee*/;} SEPARATOR liste {}
+		| '+' translation SEPARATOR liste {}
+		| cycle SEPARATOR liste {}
+		;
 		
-	point : '(' expr ',' expr ')' {point($2, $4);}
+	point : '(' expr ',' expr ')' {creer_point($2, $4);}
 			;
 
-	cycle : CYCLE {point(premierpoint_x, premierpoint_y);}
+	cycle : CYCLE {creer_point(premierpoint_x, premierpoint_y);}
 			;
-	translation : '(' expr ',' expr ')' {point(pointprec_x+$2, pointprec_y+$4);}
+			
+	translation : '(' expr ',' expr ')' {creer_point(pointprec_x+$2, pointprec_y+$4);}
 			;
 
 	expr : expr '+' expr {$$=$1+$3;}
@@ -97,28 +118,8 @@ int main(void) {
 	fprintf(fres,"\tcairo_destroy(cr);\n");
 	fprintf(fres,"\tcairo_surface_destroy(pdf_surface);\n");
 	fprintf(fres,"\treturn 0;\n}");
+	printf("Nb ligne %d \n", line);
+	printf("variables coordonnees stockees :\n");
+	afficherCoors();
 	return EXIT_SUCCESS;
-}
-void draw()
-{
-	firstPoint = true;	
-}
-
-void point(int x, int y)
-{
-	if (firstPoint){
-		firstPoint = false;
-		premierpoint_x=x;
-		premierpoint_y=y;
-		pointprec_x=x;
-		pointprec_y=y;
-		fprintf(fres,"\tcairo_move_to(cr,%d, %d) ;\n", x, y);
-	}
-	else{
-		fprintf(fres,"\tcairo_line_to(cr,%d, %d);\n", x, y);
-		fprintf(fres,"\tcairo_set_line_width(cr, 1.0);\n");
-		pointprec_x=x;
-		pointprec_y=y;
-	}
-
 }
