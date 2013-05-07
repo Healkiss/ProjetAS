@@ -25,6 +25,7 @@ typedef struct {
 typedef struct_coordonnee* Coordonnee;
 //type liste simplement chainée de coordonnées
 typedef struct{
+	//a rajouter, un entier pour la profondeur ou faire une liste de liste
     Coordonnee coor;
     struct struct_liste_coor *nxt;
 }struct_liste_coor;
@@ -41,6 +42,7 @@ typedef struct {
 typedef struct_point* Point;
 //type liste simplement chainée de points
 typedef struct{
+	//a rajouter, un entier pour la profondeur ou faire une liste de liste
     Point point;
     struct struct_liste_point *nxt;
 }struct_liste_point;
@@ -51,16 +53,16 @@ Liste_point GlobalListePoint;
 //type liste, un chemin de couple d'entier : "(0,10)--(10,10)"
 typedef struct
 {
-    Point point;
-    struct struct_chemin *nxt;
+	char* id;
+    Liste_point chemin;
 }struct_chemin;
 typedef struct_chemin* Chemin;
 //type chemin simplement chainée de listes
 typedef struct
 {
-	char* id;
-    Liste_point chemin;
-    struct struct_liste_chemin *nxt;
+	//a rajouter, un entier pour la profondeur ou faire une liste de liste
+	Chemin chemin;
+	struct struct_liste_chemin *nxt;
 }struct_liste_chemin;
   
 typedef struct_liste_chemin* Liste_chemin;
@@ -72,16 +74,20 @@ Liste_chemin GlobalListeChemin;
 Coordonnee creer_coor(char* id, int val);
 Liste_coor ajouterCoor(Liste_coor, char* id);
 void afficherCoors(Liste_coor);
-Liste_coor affecterCoor(Liste_coor, char* id, int val);
+//return 1 si la variable id existe, 0 sinon
+int affecterCoor(Liste_coor, char* id, int val);
 
 Point creer_point(char* id, int x, int y);
 Liste_point ajouterPoint(Liste_point, char* id);
 void afficherPoints(Liste_point);
-Liste_point affecterPoint(Liste_point, char* id, int x, int y);
+//return 1 si la variable id existe, 0 sinon
+int affecterPoint(Liste_point, char* id, int x, int y);
+Liste_point ajouterEtAffecterPoint(Liste_point, char*, int, int);
 
 Liste_chemin ajouterChemin(Liste_chemin, char* id);
 void afficherChemin(Liste_chemin);
-Liste_chemin affecterPointToChemin(Liste_chemin, char* id, int x, int y);
+//return 1 si la variable id existe, 0 sinon
+int affecterPointToChemin(Liste_chemin, char* id, int x, int y);
 
 int premierpoint_x;
 int premierpoint_y;

@@ -1441,7 +1441,7 @@ yyreduce:
 
 /* Line 1806 of yacc.c  */
 #line 47 "projet.y"
-    {line++;}
+    {line++;affecterCheminName = NULL;}
     break;
 
   case 3:
@@ -1589,8 +1589,8 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 104 "projet.y"
     {
-									affecterPointName = (yyvsp[(1) - (1)].str);
-								}
+												affecterPointName = (yyvsp[(1) - (1)].str);
+											}
     break;
 
   case 21:
@@ -1598,10 +1598,10 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 107 "projet.y"
     {
-									/*lire liste chaine*/;
-									printf("%s<<affectation variable point : %s to %s >>%s\n", BLUE, "3", (yyvsp[(1) - (4)].str), WHITE);
-									printf("affecter point name debut : %s \n",affecterPointName);
-								}
+												/*lire liste chaine*/;
+												printf("%s<<affectation variable point : %s to %s >>%s\n", BLUE, "3", (yyvsp[(1) - (4)].str), WHITE);
+												printf("affecter point name debut : %s \n",affecterPointName);
+											}
     break;
 
   case 22:
@@ -1609,8 +1609,8 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 112 "projet.y"
     {
-									affecterCheminName = (yyvsp[(1) - (1)].str);
-								}
+												affecterCheminName = (yyvsp[(1) - (1)].str);
+											}
     break;
 
   case 23:
@@ -1618,10 +1618,10 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 115 "projet.y"
     {
-									/*lire liste chaine*/;
-									printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", (yyvsp[(1) - (4)].str), WHITE);
-									printf("affecter chemin name debut : %s \n",affecterCheminName);
-								}
+												/*lire liste chaine*/;
+												printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", (yyvsp[(1) - (4)].str), WHITE);
+												printf("affecter chemin name debut : %s \n",affecterCheminName);
+											}
     break;
 
   case 24:
@@ -1692,19 +1692,19 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 140 "projet.y"
     {
-									if(affecterPointName!= NULL)
-									{
-										affecterPoint(GlobalListePoint, affecterPointName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-										affecterPointName = NULL;
-									}else{
-										if(affecterCheminName != NULL){
-											printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,affecterCheminName,(yyvsp[(2) - (5)].scal),(yyvsp[(4) - (5)].scal),WHITE);
-											affecterPointToChemin(GlobalListeChemin, affecterCheminName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-										}else{
-											dessiner_point((yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-										}
-									}
-								}
+												if(affecterPointName!= NULL)
+												{
+													affecterPoint(GlobalListePoint, affecterPointName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													affecterPointName = NULL;
+												}else{
+													if(affecterCheminName != NULL){
+														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,affecterCheminName,(yyvsp[(2) - (5)].scal),(yyvsp[(4) - (5)].scal),WHITE);
+														affecterPointToChemin(GlobalListeChemin, affecterCheminName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													}else{
+														dessiner_point((yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													}
+												}
+											}
     break;
 
   case 35:
@@ -1712,21 +1712,21 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 154 "projet.y"
     {
-										(yyval.str)[0] = (yyvsp[(2) - (5)].scal) * cos((yyvsp[(4) - (5)].scal)) ; (yyval.str)[1] = (yyvsp[(2) - (5)].scal) * sin((yyvsp[(4) - (5)].scal));
+												(yyval.str)[0] = (yyvsp[(2) - (5)].scal) * cos((yyvsp[(4) - (5)].scal)) ; (yyval.str)[1] = (yyvsp[(2) - (5)].scal) * sin((yyvsp[(4) - (5)].scal));
 										
-										if(affecterPointName != NULL)
-										{
-											affecterPoint(GlobalListePoint, affecterPointName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-											affecterPointName = NULL;
-										}else{
-											if(affecterCheminName != NULL){
-												printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,affecterCheminName,(yyvsp[(2) - (5)].scal),(yyvsp[(4) - (5)].scal),WHITE);
-												affecterPointToChemin(GlobalListeChemin, affecterCheminName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-											}else{
-												dessiner_point((yyval.str)[0], (yyval.str)[1]);
+												if(affecterPointName != NULL)
+												{
+													affecterPoint(GlobalListePoint, affecterPointName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													affecterPointName = NULL;
+												}else{
+													if(affecterCheminName != NULL){
+														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,affecterCheminName,(yyvsp[(2) - (5)].scal),(yyvsp[(4) - (5)].scal),WHITE);
+														affecterPointToChemin(GlobalListeChemin, affecterCheminName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													}else{
+														dessiner_point((yyval.str)[0], (yyval.str)[1]);
+													}
+												}
 											}
-										}
-									}
     break;
 
   case 36:

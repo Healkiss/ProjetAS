@@ -81,7 +81,7 @@ void afficherCoors(Liste_coor listCoor)
     
 }
 
-Liste_coor affecterCoor(Liste_coor listCoor, char* id, int val)
+int affecterCoor(Liste_coor listCoor, char* id, int val)
 {
 	Liste_coor temp = listCoor;
 	char * idtmp;
@@ -93,12 +93,12 @@ Liste_coor affecterCoor(Liste_coor listCoor, char* id, int val)
     	if (strcmp(idtmp, id) == 0){
     		
     		temp->coor->valeur = val;
-    		return listCoor;
+    		return 1;
     	}
         temp = temp->nxt;
         
     }
-    return listCoor;
+    return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ void afficherPoints(Liste_point listePoint)
     
 }
 
-Liste_point affecterPoint(Liste_point listePoint, char* id, int x, int y)
+int affecterPoint(Liste_point listePoint, char* id, int x, int y)
 {
 	Liste_point temp = GlobalListePoint;
 	char * idtmp;
@@ -175,10 +175,41 @@ Liste_point affecterPoint(Liste_point listePoint, char* id, int x, int y)
     		
     		temp->point->x = x;
     		temp->point->y = y;
-    		return listePoint;
+    		return 1;
     	}
         temp = temp->nxt;
         
+    }
+    return 0;
+}
+
+Liste_point ajouterEtAffecterPoint(Liste_point listePoint, char* id, int x, int y)
+{
+	Point point = creer_point(id,x,y);
+	/* On crée un nouvel élément */
+	struct_liste_point* nouvelElement;
+	nouvelElement = malloc(sizeof(Liste_point));
+	/* On assigne la valeur au nouvel élément */
+	nouvelElement->point = point;
+  
+	/* On ajoute en fin, donc aucun élément ne va suivre */
+	nouvelElement->nxt = NULL;
+  
+	if(listePoint == NULL)
+    {
+        /* Si la liste est videé il suffit de renvoyer l'élément créé */
+		listePoint = nouvelElement;
+    }
+    else
+    {
+        /* Sinon, on parcourt la liste à l'aide d'un pointeur temporaire et on
+        indique que le dernier élément de la liste est relié au nouvel élément */
+		Liste_point temp = listePoint;
+        while(temp->nxt != NULL)
+        {
+            temp = temp->nxt;
+        }
+        temp->nxt = nouvelElement;
     }
     return listePoint;
 }
@@ -187,12 +218,43 @@ Liste_point affecterPoint(Liste_point listePoint, char* id, int x, int y)
 ////////FONCTIONS LISTES /////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 Chemin creer_chemin(char* id){	
-	struct_liste_chemin* chemin;
+	struct_chemin* chemin;
 	chemin = malloc(sizeof(Chemin));
 	chemin->id = id;
 	chemin->chemin = NULL;
 	
 	return chemin;
+}
+
+Liste_chemin creerChemin(Liste_chemin listeChemin)
+{
+	Chemin chemin = creer_chemin(NULL);
+	/* On crée un nouvel élément */
+	struct_liste_chemin* nouvelElement;
+	nouvelElement = malloc(sizeof(Liste_chemin));
+	/* On assigne la valeur au nouvel élément */
+	nouvelElement->chemin = NULL;
+  
+	/* On ajoute en fin, donc aucun élément ne va suivre */
+	nouvelElement->nxt = NULL;
+  
+	if(listeChemin == NULL)
+    {
+        /* Si la liste est videé il suffit de renvoyer l'élément créé */
+		listeChemin = nouvelElement;
+    }    
+    else
+    {
+        /* Sinon, on parcourt la liste à l'aide d'un pointeur temporaire et on
+        indique que le dernier élément de la liste est relié au nouvel élément */
+		Liste_chemin temp = listeChemin;
+        while(temp->nxt != NULL)
+        {
+            temp = temp->nxt;
+        }
+        temp->nxt = nouvelElement;
+    }
+    return listeChemin;
 }
 
 Liste_chemin ajouterChemin(Liste_chemin listeChemin, char* id)
@@ -202,7 +264,6 @@ Liste_chemin ajouterChemin(Liste_chemin listeChemin, char* id)
 	struct_liste_chemin* nouvelElement;
 	nouvelElement = malloc(sizeof(Liste_chemin));
 	/* On assigne la valeur au nouvel élément */
-	nouvelElement->id = id;
 	nouvelElement->chemin = chemin;
   
 	/* On ajoute en fin, donc aucun élément ne va suivre */
@@ -235,8 +296,8 @@ void afficherChemins(Liste_chemin listeChemin)
 	Liste_chemin temp = listeChemin;
 	while(temp != NULL)
     {
-		id = temp->id;
-		printf("%s = \n", temp->id);
+		id = temp->chemin->id;
+		printf("%s = \n", temp->chemin->id);
 		Liste_point tempListe = temp->chemin;
 		while(tempListe != NULL)
 		{
@@ -250,37 +311,24 @@ void afficherChemins(Liste_chemin listeChemin)
     
 }
 
-Liste_chemin affecterPointToChemin(Liste_chemin listeChemin, char* id, int x, int y)
+int affecterPointToChemin(Liste_chemin listeChemin, char* id, int x, int y)
 {
-	Liste_chemin temp = GlobalListeChemin;
+	Liste_chemin temp = listeChemin;
 	char * idtmp;
 	int resultat;
 	Point point = creer_point(NULL, x, y);
+	afficherChemins(listeChemin);
     while(temp != NULL)
     {
-    	idtmp = temp->id;
+    	idtmp = temp->chemin->id;
     	resultat = strcmp(idtmp, id);
     	if (resultat == 0){
-    		printf("chemin trouvé\n");
-    		ajouterPointToChemin(temp->chemin, point);
-    		return listeChemin;
+    		printf("chemin %s trouvé\n",id);
+    		temp->chemin = ajouterEtAffecterPoint(temp->chemin->chemin,NULL,  point->x, point->y);
+    		return 1;
     	}
         temp = temp->nxt;
         
     }
-    return listeChemin;
-}
-
-int ajouterPointToChemin(chemin, point)
-{
-	Chemin newChemin = creer_chemin(NULL);
-	newChemin->point = point;
-	newChemin->nxt = NULL;
-	Liste_chemin temp = chemin;
-    while(temp->nxt != NULL)
-    {
-        temp = temp->nxt;
-    }
-    printf("ajout du nouveau chemin'point'\n");
-    temp->nxt = newChemin;
+    return 0;
 }
