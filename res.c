@@ -5,7 +5,7 @@ int main(void){
 	cairo_t *cr; 
 	cairo_surface_t* pdf_surface = cairo_pdf_surface_create("dessin.pdf",100,100); 
 	cr = cairo_create(pdf_surface);
-	cairo_move_to(cr,0, 10) ;
+	cairo_move_to(cr,12, 9) ;
 	cairo_line_to(cr,10, 10);
 	cairo_set_line_width(cr, 1.0);
 	cairo_line_to(cr,10, 0);

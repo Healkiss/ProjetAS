@@ -28,9 +28,33 @@ Passer des chaines pour par exemple envoyer le nom de la variable et la stocker
 Rajouter la gestion des 3 listes, faire une fonction de recherches dans ces listes pour trouver si la variable existe, la modifier ..
 
 
-4/05
+5/05
 Ajout des coordonnées polaire -> cartesienne a la source (des la construction du point et l'enregistrement)
 
 Generisation des liste, avant on ne pouvait que modifier les listes globals, maintenant il suffit d'envoyer la liste qu'on veut modifier et la recuperer a la sortie de la fonction.
 Coordonnée, points marche donc
-mais erreurs dans les files pour les chemins.
+mais erreurs dans les files pour les chemins, ceux ci s'additionne alors qu'on voudrait les remplacer.
+
+
+6/05
+On peut calculer des chiffres et des variables
+On peut affecter des points a des points
+Support du niveau de profondeur (pas encore implementé), la variable profondeur sera  incrementé selon la profondeur. Et il faudra affiner les recherches et creer les variables sur la bonne profondeur.
+On peut utiliser des variables points dans les chemins. (pour les affecter ou les dessiner)
+Passage du int au double -> raté atof, strtod ne renvoi que des valeurs aleatoire et impossible de caster simplement de int vers double pour n'avoir qu'a caster de l'un vers l'autre jusqu'a ce qu'on trouve une solution 
+
+A FAIRE :
+Affecter liste a liste et Concatenation de liste (lp '.=' (1,2)--(2,3)) au lieu du comportement actuelle et vider la liste pour la recommencer dans le cas d'un "="
+
+
+A FAIRE EMILIE:
+Couleurs : la fonction dans le c y est(terminé - au debut de function.c), reste a faire le lex(commencée - au milieu des regles lex) et la grammaire(commencée- à la fin des regles bison) reste a faire
+SET_COLOR doit etre suivi de :
+red
+green
+blue
+alpha
+Decalage (translation) (commencé mais pas fini, en tout cas, pas testé)
+rotation (aucune idée de ce qu'il aut faire, commencer par les scalaire et les chemin, on verra les images plus tard)
+
+(IMAGES => trouver une façon de proceder, je n'ai aucune idée de quoi faire ..)

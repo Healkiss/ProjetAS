@@ -10,14 +10,16 @@
 //globals
 int firstPoint;
 int line;
+int profondeur;
 FILE *fres;
-#define RED     "\033[1;31m" 
-#define WHITE   "\033[0;m" 
-#define GREEN   "\033[1;32m" 
-#define BLUE    "\033[1;34m" 
+#define RED     "\033[1;31m" //error
+#define WHITE   "\033[0;m" 		//text
+#define GREEN   "\033[1;32m" 	//success
+#define YELLOW    "\033[1;33m" //debug
+#define BLUE    "\033[1;34m" //info
 
 /*faire liste de variable, 3 listes, une pour chaque type*/
-//type coordonnée, un entier : "1"
+//type coordonnée, un int : "1"
 typedef struct {
 	char* id;
 	int valeur;
@@ -25,7 +27,7 @@ typedef struct {
 typedef struct_coordonnee* Coordonnee;
 //type liste simplement chainée de coordonnées
 typedef struct{
-	//a rajouter, un entier pour la profondeur ou faire une liste de liste
+	int profondeur;
     Coordonnee coor;
     struct struct_liste_coor *nxt;
 }struct_liste_coor;
@@ -33,7 +35,7 @@ typedef struct_liste_coor* Liste_coor;
 //notre liste globale de variable coordonnées
 Liste_coor GlobalListeCoor;
 
-//type point, un couple d'entier : "(0,10)"
+//type point, un couple de int : "(0,10)"
 typedef struct {
 	char* id;
 	int x;
@@ -42,7 +44,7 @@ typedef struct {
 typedef struct_point* Point;
 //type liste simplement chainée de points
 typedef struct{
-	//a rajouter, un entier pour la profondeur ou faire une liste de liste
+	int profondeur;
     Point point;
     struct struct_liste_point *nxt;
 }struct_liste_point;
@@ -50,7 +52,7 @@ typedef struct_liste_point* Liste_point;
 //notre liste globale de variable point
 Liste_point GlobalListePoint;
 
-//type liste, un chemin de couple d'entier : "(0,10)--(10,10)"
+//type liste, un chemin de couple de int : "(0,10)--(10,10)"
 typedef struct
 {
 	char* id;
@@ -60,7 +62,7 @@ typedef struct_chemin* Chemin;
 //type chemin simplement chainée de listes
 typedef struct
 {
-	//a rajouter, un entier pour la profondeur ou faire une liste de liste
+	int profondeur;
 	Chemin chemin;
 	struct struct_liste_chemin *nxt;
 }struct_liste_chemin;
@@ -72,22 +74,32 @@ Liste_chemin GlobalListeChemin;
 //declarations fonctions c
 ////////////////////////////////////////////////////////////////////////////////
 Coordonnee creer_coor(char* id, int val);
-Liste_coor ajouterCoor(Liste_coor, char* id);
-void afficherCoors(Liste_coor);
-//return 1 si la variable id existe, 0 sinon
-int affecterCoor(Liste_coor, char* id, int val);
+Liste_coor ajouterCoor(Liste_coor, int profondeur, char* id);
+//return 1 si la variable id existe, -1 sinon
+int affecterCoor(Liste_coor listeCoor, int profondeur, char* id, int val);
+int affecterCoorToCoor(Liste_coor listeCoor, int profondeur, char*, char*);
+int existeDansCoor(Liste_coor listeCoor, int profondeur, char *varname);
+//return la valeur, -1 si n'existe pas
+Coordonnee valeurCoor(Liste_coor listeCoor, int profondeurchar,char *varname);
+void afficherCoors(Liste_coor listeCoor, int profondeur);
 
-Point creer_point(char* id, int x, int y);
-Liste_point ajouterPoint(Liste_point, char* id);
-void afficherPoints(Liste_point);
-//return 1 si la variable id existe, 0 sinon
-int affecterPoint(Liste_point, char* id, int x, int y);
-Liste_point ajouterEtAffecterPoint(Liste_point, char*, int, int);
+Point creer_point(char*, int, int);
+Liste_point ajouterPoint(Liste_point, int profondeur,  char*);
+//return 1 si la variable id existe, -1 sinon
+int affecterPoint(Liste_point, int profondeur, char* id, int x, int y);
+Liste_point ajouterEtAffecterPoint(Liste_point, int profondeur, char*, int, int);
+int existeDansPoint(Liste_point, int profondeur, char *varname);
+//return la valeur, -1 si n'existe pas
+Point valeurPoint(Liste_point, int profondeur, char *varname);
+void afficherPoints(Liste_point, int profondeur);
 
-Liste_chemin ajouterChemin(Liste_chemin, char* id);
-void afficherChemin(Liste_chemin);
-//return 1 si la variable id existe, 0 sinon
-int affecterPointToChemin(Liste_chemin, char* id, int x, int y);
+Liste_chemin ajouterChemin(Liste_chemin, int profondeur, char* id);
+//return 1 si la variable id existe, -1 sinon
+int affecterPointToChemin(Liste_chemin, int profondeur,  char* id, int x, int y);
+int existeDansChemin(Liste_chemin, int profondeur, char *varname);
+//return la valeur, -1 si n'existe pas
+Chemin valeurChemin(Liste_chemin, int profondeur, char *varname);
+void afficherChemin(Liste_chemin, int profondeur);
 
 int premierpoint_x;
 int premierpoint_y;

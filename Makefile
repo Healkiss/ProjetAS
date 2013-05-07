@@ -1,11 +1,11 @@
-projet : projet.y projet.l test.txt
+projet : projet.y projet.l test.txt functions.c functions.h
 	bison -d -v $@.y
 	lex $@.l
 	gcc functions.c lex.yy.c $@.tab.c -lfl -o $@ -lm
 	echo "---"
 	./$@ < test.txt
 
-dessin :
+dessin : projet
 	gcc -o dessin res.c -I /usr/include/cairo -L /usr/lib -lcairo
 	./dessin
 	xpdf dessin.pdf

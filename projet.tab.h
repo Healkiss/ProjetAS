@@ -38,19 +38,21 @@
       know about them.  */
    enum yytokentype {
      NB = 258,
-     DRAW = 259,
-     FILL = 260,
-     CYCLE = 261,
-     SEPARATOR = 262,
-     EOI = 263,
-     EOL = 264,
-     VAR_COOR = 265,
-     VAR_PT = 266,
-     VAR_LIST = 267,
-     VAR_NAME_COOR = 268,
-     VAR_NAME_PT = 269,
-     VAR_NAME_LIST = 270,
-     UMINUS = 271
+     VARERROR = 259,
+     SET_COLOR = 260,
+     DRAW = 261,
+     FILL = 262,
+     CYCLE = 263,
+     SEPARATOR = 264,
+     EOI = 265,
+     EOL = 266,
+     VAR_COOR = 267,
+     VAR_PT = 268,
+     VAR_LIST = 269,
+     VAR_NAME_COOR = 270,
+     VAR_NAME_PT = 271,
+     VAR_NAME_LIST = 272,
+     UMINUS = 273
    };
 #endif
 
@@ -63,13 +65,13 @@ typedef union YYSTYPE
 /* Line 2068 of yacc.c  */
 #line 19 "projet.y"
 
-	int scal ;
+	int val_scal ;
 	char *str;
 
 
 
 /* Line 2068 of yacc.c  */
-#line 73 "projet.tab.h"
+#line 75 "projet.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
