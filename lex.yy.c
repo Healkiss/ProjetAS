@@ -843,94 +843,101 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 25 "projet.l"
-{ECHO;yylval.str = strdup(yytext);return typeVar(strdup(yytext));}
+{ECHO;yylval.str = strdup(yytext);
+									if(!typeVar(strdup(yylval.str))){
+										printf("\n%s<<la variable \"%s\" n'existe pas %s >>%s\n", RED, yylval.str, WHITE);
+										return VARERROR;
+									}else{
+										return typeVar(strdup(yylval.str));
+									}
+								}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 27 "projet.l"
+#line 34 "projet.l"
 {ECHO;BEGIN DECLARATION_COOR;return VAR_COOR;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 28 "projet.l"
+#line 35 "projet.l"
 {ECHO;BEGIN DECLARATION_PT;return VAR_PT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 29 "projet.l"
+#line 36 "projet.l"
 {ECHO;BEGIN DECLARATION_LIST;return VAR_LIST;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 31 "projet.l"
+#line 38 "projet.l"
 {ECHO;return yytext[0];}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 32 "projet.l"
+#line 39 "projet.l"
 {ECHO;return yytext[0];}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 33 "projet.l"
+#line 40 "projet.l"
 {ECHO;return yytext[0];}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 35 "projet.l"
+#line 42 "projet.l"
 {BEGIN INITIAL;ECHO;return EOI;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 36 "projet.l"
+#line 43 "projet.l"
 {BEGIN INITIAL;ECHO;return EOI;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 37 "projet.l"
+#line 44 "projet.l"
 {BEGIN INITIAL;ECHO;return EOI;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 38 "projet.l"
+#line 45 "projet.l"
 {ECHO;return SEPARATOR;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 40 "projet.l"
+#line 47 "projet.l"
 {ECHO;yylval.str = strdup(yytext);return VAR_NAME_COOR;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 41 "projet.l"
+#line 48 "projet.l"
 {ECHO;yylval.str = strdup(yytext);return VAR_NAME_PT;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 42 "projet.l"
+#line 49 "projet.l"
 {ECHO;yylval.str = strdup(yytext);return VAR_NAME_LIST;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 44 "projet.l"
+#line 51 "projet.l"
 {ECHO;yylval.scal = atoi(yytext);return NB;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 45 "projet.l"
+#line 52 "projet.l"
 {ECHO;yylval.scal = atoi(yytext);return NB;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 46 "projet.l"
+#line 53 "projet.l"
 {ECHO;yylval.scal = atoi(yytext);return NB;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 47 "projet.l"
+#line 54 "projet.l"
 ECHO;
 	YY_BREAK
-#line 934 "lex.yy.c"
+#line 941 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(DECLARATION_COOR):
 case YY_STATE_EOF(DECLARATION_PT):
@@ -1931,43 +1938,17 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 47 "projet.l"
+#line 54 "projet.l"
 
 
- int typeVar(char* varname){
-	if(chercherDansCoor(varname) == 1){
+int typeVar(char* varname){
+	if(existeDansCoor(GlobalListeCoor, profondeur, varname) == 1)
 		return VAR_NAME_COOR;
-	}
-	if(chercherDansPoint(varname) == 1)
+	if(existeDansPoint(GlobalListePoint, profondeur, varname) == 1)
 		return VAR_NAME_PT;
-	return VAR_NAME_LIST;
+	if(existeDansListe(GlobalListeChemin, profondeur, varname) == 1)
+		return VAR_NAME_LIST;
+	return 0;
 }
 
-int chercherDansCoor(char *varname){
-	Liste_coor temp = GlobalListeCoor;
-	char * id;
-	int resultat;
-    while(temp != NULL)
-    {
-    	id = temp->coor->id;
-    	resultat = strcmp(id, varname);
-    	if (strcmp(id, varname) == 0){
-    		return 1;
-    	}
-        temp = temp->nxt;
-        
-    }
-    return 0;
-}
-int chercherDansPoint(char *varname){
-	Liste_point temp = GlobalListePoint;
-	char * id;
-    while(temp != NULL)
-    {
-    	if (strcmp(temp->point->id, varname) == 0)
-    		return 1;
-        temp = temp->nxt;
-    }
-    return 0;
-}
 

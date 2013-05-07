@@ -33,4 +33,14 @@ Ajout des coordonnées polaire -> cartesienne a la source (des la construction d
 
 Generisation des liste, avant on ne pouvait que modifier les listes globals, maintenant il suffit d'envoyer la liste qu'on veut modifier et la recuperer a la sortie de la fonction.
 Coordonnée, points marche donc
-mais erreurs dans les files pour les chemins.
+mais erreurs dans les files pour les chemins, ceux ci s'additionne alors qu'on voudrait les remplacer.
+
+On peut calculer des chiffres et des variables
+On peut affecter des points a des points
+
+
+A FAIRE:
+Couleurs
+Decalage (translation)
+rotation
+Concatenation de liste (lp '.=' (1,2)--(2,3))

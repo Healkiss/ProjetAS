@@ -34,7 +34,7 @@ Coordonnee creer_coor(char* id, int val){
 	return coord;
 }
 
-Liste_coor ajouterCoor(Liste_coor listCoor, char* id)
+Liste_coor ajouterCoor(Liste_coor listeCoor, int profondeur, char* id)
 {
 	Coordonnee coord = creer_coor(id, 0);
 	/* On crée un nouvel élément */
@@ -42,48 +42,32 @@ Liste_coor ajouterCoor(Liste_coor listCoor, char* id)
 	nouvelElement = malloc(sizeof(Liste_coor));
 	/* On assigne la valeur au nouvel élément */
 	nouvelElement->coor = coord;
-  
+  	nouvelElement->profondeur = profondeur;
 	/* On ajoute en fin, donc aucun élément ne va suivre */
 	nouvelElement->nxt = NULL;
   
-	if(listCoor == NULL)
+	if(listeCoor == NULL)
     {
         /* Si la liste est videé il suffit de renvoyer l'élément créé */
-		listCoor = nouvelElement;
+		listeCoor = nouvelElement;
     }
     else
     {
         /* Sinon, on parcourt la liste à l'aide d'un pointeur temporaire et on
         indique que le dernier élément de la liste est relié au nouvel élément */
-		Liste_coor temp = listCoor;
+		Liste_coor temp = listeCoor;
         while(temp->nxt != NULL)
         {
-            temp = temp->nxt;
+            temp = (Liste_coor)temp->nxt;
         }
         temp->nxt = nouvelElement;
     }
-    return listCoor;
+    return listeCoor;
 }
 
-void afficherCoors(Liste_coor listCoor)
+int affecterCoor(Liste_coor listeCoor, int profondeur, char* id, int val)
 {
-	char * id;
-	int val;
-	Liste_coor temp = listCoor;
-	while(temp != NULL)
-    {
-        /* Si la liste est videé il suffit de renvoyer l'élément créé */
-		id = temp->coor->id;
-		val =  temp->coor->valeur;
-		printf("%s = %d \n", id, val);
-		temp = temp->nxt;
-    }
-    
-}
-
-int affecterCoor(Liste_coor listCoor, char* id, int val)
-{
-	Liste_coor temp = listCoor;
+	Liste_coor temp = listeCoor;
 	char * idtmp;
 	int resultat;
     while(temp != NULL)
@@ -100,7 +84,83 @@ int affecterCoor(Liste_coor listCoor, char* id, int val)
     }
     return 0;
 }
+int affecterCoorToCoor(Liste_coor listeCoor, int profondeur, char* id1, char* id2){
+	Liste_coor temp1 = listeCoor;
+	char * id;
+	int resultat;
+    while(temp1 != NULL)
+    {
+    	id = temp1->coor->id;
+    	resultat = strcmp(id, id1);
+    	if (strcmp(id, id1) == 0){
+    		Liste_coor temp2 = listeCoor;
+			while(temp2 != NULL)
+			{
+				id = temp2->coor->id;
+				resultat = strcmp(id, id1);
+				if (strcmp(id, id2) == 0){
+					temp1->coor->valeur = temp2->coor->valeur;
+					return 1;
+				}
+				temp2 = temp2->nxt;
+				
+			}
+    		return 1;
+    	}
+        temp1 = temp1->nxt;
+        
+    }
 
+    return 0;
+}
+
+int existeDansCoor(Liste_coor listeCoor, int profondeur, char *varname){
+	Liste_coor temp = listeCoor;
+	char * id;
+	int resultat;
+    while(temp != NULL)
+    {
+    	id = temp->coor->id;
+    	resultat = strcmp(id, varname);
+    	if (strcmp(id, varname) == 0){
+    		return 1;
+    	}
+        temp = temp->nxt;
+        
+    }
+    return 0;
+}
+
+Coordonnee valeurCoor(Liste_coor listeCoor, int profondeur, char *varname){
+	Liste_coor temp = listeCoor;
+	char * id;
+    while(temp != NULL)
+    {
+    	id = temp->coor->id;
+    	if (strcmp(id, varname) == 0){
+    		return temp->coor;
+    	}
+        temp = temp->nxt;
+        
+    }
+    return NULL;
+}
+
+void afficherCoors(Liste_coor listeCoor, int profondeur)
+{
+	char * id;
+	int val;
+	Liste_coor temp = listeCoor;
+	while(temp != NULL)
+    {
+        /* Si la liste est videé il suffit de renvoyer l'élément créé */
+		id = temp->coor->id;
+		val =  temp->coor->valeur;
+		printf("%s = %d \n", id, val);
+		temp = temp->nxt;
+    }
+    
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////FONCTIONS POINT //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,15 +173,16 @@ Point creer_point(char* id, int x, int y){
 	return point;
 }
 
-Liste_point ajouterPoint(Liste_point listePoint, char* id)
+Liste_point ajouterPoint(Liste_point listePoint, int profondeur, char* id)
 {
-	Point point = creer_point(id,0,0);
+	Point point = creer_point(id,NULL,NULL);
 	/* On crée un nouvel élément */
 	struct_liste_point* nouvelElement;
 	nouvelElement = malloc(sizeof(Liste_point));
 	/* On assigne la valeur au nouvel élément */
 	nouvelElement->point = point;
-  
+	nouvelElement->profondeur = profondeur;
+   
 	/* On ajoute en fin, donc aucun élément ne va suivre */
 	nouvelElement->nxt = NULL;
   
@@ -144,27 +205,9 @@ Liste_point ajouterPoint(Liste_point listePoint, char* id)
     return listePoint;
 }
 
-void afficherPoints(Liste_point listePoint)
+int affecterPoint(Liste_point listePoint, int profondeur, char* id, int x, int y)
 {
-	char * id;
-	int x;
-	int y;
 	Liste_point temp = listePoint;
-	while(temp != NULL)
-    {
-        /* Si la liste est vide il suffit de renvoyer l'élément créé */
-		id = temp->point->id;
-		x =  temp->point->x;
-		y =  temp->point->y;
-		printf("%s = %d , %d \n", id, x, y);
-		temp = temp->nxt;
-    }
-    
-}
-
-int affecterPoint(Liste_point listePoint, char* id, int x, int y)
-{
-	Liste_point temp = GlobalListePoint;
 	char * idtmp;
 	int resultat;
     while(temp != NULL)
@@ -183,7 +226,28 @@ int affecterPoint(Liste_point listePoint, char* id, int x, int y)
     return 0;
 }
 
-Liste_point ajouterEtAffecterPoint(Liste_point listePoint, char* id, int x, int y)
+int affecterPointAvecPoint(Liste_point listePoint, int profondeur, char* id, Point point)
+{
+	Liste_point temp = listePoint;
+	char * idtmp;
+	int resultat;
+    while(temp != NULL)
+    {
+    	idtmp = temp->point->id;
+    	resultat = strcmp(idtmp, id);
+    	if (resultat == 0){
+    		temp->point->x = point->x;
+    		temp->point->y = point->y;
+    		return 1;
+    	}
+        temp = temp->nxt;
+        
+    }
+    return 0;
+
+
+}
+Liste_point ajouterEtAffecterPoint(Liste_point listePoint, int profondeur, char* id, int x, int y)
 {
 	Point point = creer_point(id,x,y);
 	/* On crée un nouvel élément */
@@ -214,6 +278,47 @@ Liste_point ajouterEtAffecterPoint(Liste_point listePoint, char* id, int x, int 
     return listePoint;
 }
 
+int existeDansPoint(Liste_point listePoint, int profondeur, char *varname){
+	Liste_point temp = listePoint;
+	char * id;
+    while(temp != NULL)
+    {
+    	if (strcmp(temp->point->id, varname) == 0)
+    		return 1;
+        temp = temp->nxt;
+    }
+    return 0;
+}
+
+Point valeurPoint(Liste_point listePoint, int profondeur, char *varname){
+	Liste_point temp = listePoint;
+	char * id;
+    while(temp != NULL)
+    {
+    	if (strcmp(temp->point->id, varname) == 0)
+    		return temp->point;
+        temp = temp->nxt;
+    }
+    return NULL;
+}
+
+void afficherPoints(Liste_point listePoint, int profondeur)
+{
+	char * id;
+	int x;
+	int y;
+	Liste_point temp = listePoint;
+	while(temp != NULL)
+    {
+        /* Si la liste est vide il suffit de renvoyer l'élément créé */
+		id = temp->point->id;
+		x =  temp->point->x;
+		y =  temp->point->y;
+		printf("%s = %d , %d \n", id, x, y);
+		temp = temp->nxt;
+    }
+    
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////FONCTIONS LISTES /////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -226,38 +331,7 @@ Chemin creer_chemin(char* id){
 	return chemin;
 }
 
-Liste_chemin creerChemin(Liste_chemin listeChemin)
-{
-	Chemin chemin = creer_chemin(NULL);
-	/* On crée un nouvel élément */
-	struct_liste_chemin* nouvelElement;
-	nouvelElement = malloc(sizeof(Liste_chemin));
-	/* On assigne la valeur au nouvel élément */
-	nouvelElement->chemin = NULL;
-  
-	/* On ajoute en fin, donc aucun élément ne va suivre */
-	nouvelElement->nxt = NULL;
-  
-	if(listeChemin == NULL)
-    {
-        /* Si la liste est videé il suffit de renvoyer l'élément créé */
-		listeChemin = nouvelElement;
-    }    
-    else
-    {
-        /* Sinon, on parcourt la liste à l'aide d'un pointeur temporaire et on
-        indique que le dernier élément de la liste est relié au nouvel élément */
-		Liste_chemin temp = listeChemin;
-        while(temp->nxt != NULL)
-        {
-            temp = temp->nxt;
-        }
-        temp->nxt = nouvelElement;
-    }
-    return listeChemin;
-}
-
-Liste_chemin ajouterChemin(Liste_chemin listeChemin, char* id)
+Liste_chemin ajouterChemin(Liste_chemin listeChemin, int profondeur, char* id)
 {
 	Chemin chemin = creer_chemin(id);
 	/* On crée un nouvel élément */
@@ -265,7 +339,8 @@ Liste_chemin ajouterChemin(Liste_chemin listeChemin, char* id)
 	nouvelElement = malloc(sizeof(Liste_chemin));
 	/* On assigne la valeur au nouvel élément */
 	nouvelElement->chemin = chemin;
-  
+	nouvelElement->profondeur = profondeur;
+	
 	/* On ajoute en fin, donc aucun élément ne va suivre */
 	nouvelElement->nxt = NULL;
   
@@ -288,7 +363,53 @@ Liste_chemin ajouterChemin(Liste_chemin listeChemin, char* id)
     return listeChemin;
 }
 
-void afficherChemins(Liste_chemin listeChemin)
+int affecterPointToChemin(Liste_chemin listeChemin, int profondeur, char* id, int x, int y)
+{
+	Liste_chemin temp = listeChemin;
+	char * idtmp;
+	int resultat;
+	Point point = creer_point(NULL, x, y);
+	//afficherChemins(listeChemin);
+    while(temp != NULL)
+    {
+    	idtmp = temp->chemin->id;
+    	resultat = strcmp(idtmp, id);
+    	if (resultat == 0){
+    		//printf("chemin %s trouvé\n",id);
+    		temp->chemin = ajouterEtAffecterPoint(temp->chemin, profondeur, NULL,  point->x, point->y);
+    		return 1;
+    	}
+        temp = temp->nxt;
+        
+    }
+    return 0;
+}
+
+int existeDansListe(Liste_chemin listeChemin, int profondeur, char *varname){
+	Liste_chemin temp = GlobalListeChemin;
+	char * id;
+    while(temp != NULL)
+    {
+    	if (strcmp(temp->chemin->id, varname) == 0)
+    		return 1;
+        temp = temp->nxt;
+    }
+    return 0;
+}
+
+Chemin valeurChemin(Liste_chemin listeChemin, int profondeur, char *varname){
+	Liste_chemin temp = GlobalListeChemin;
+	char * id;
+    while(temp != NULL)
+    {
+    	if (strcmp(temp->chemin->id, varname) == 0)
+    		return temp->chemin;
+        temp = temp->nxt;
+    }
+    return NULL;
+}
+
+void afficherChemins(Liste_chemin listeChemin, int profondeur)
 {
 	char * id;
 	int x;
@@ -299,6 +420,7 @@ void afficherChemins(Liste_chemin listeChemin)
 		id = temp->chemin->id;
 		printf("%s = \n", temp->chemin->id);
 		Liste_point tempListe = temp->chemin;
+		tempListe = (tempListe->nxt != NULL)?tempListe->nxt:tempListe;
 		while(tempListe != NULL)
 		{
 			x =  tempListe->point->x;
@@ -309,26 +431,4 @@ void afficherChemins(Liste_chemin listeChemin)
 		temp = temp->nxt;
     }
     
-}
-
-int affecterPointToChemin(Liste_chemin listeChemin, char* id, int x, int y)
-{
-	Liste_chemin temp = listeChemin;
-	char * idtmp;
-	int resultat;
-	Point point = creer_point(NULL, x, y);
-	afficherChemins(listeChemin);
-    while(temp != NULL)
-    {
-    	idtmp = temp->chemin->id;
-    	resultat = strcmp(idtmp, id);
-    	if (resultat == 0){
-    		printf("chemin %s trouvé\n",id);
-    		temp->chemin = ajouterEtAffecterPoint(temp->chemin->chemin,NULL,  point->x, point->y);
-    		return 1;
-    	}
-        temp = temp->nxt;
-        
-    }
-    return 0;
 }

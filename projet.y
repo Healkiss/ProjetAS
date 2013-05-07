@@ -1,8 +1,8 @@
  %{
 #include "functions.h"
 //est on en train d'affecter une variable ? Si oui, son nom :
-char *affecterPointName = NULL;
-char *affecterCheminName = NULL;
+char *nomPointEnAffectation = NULL;
+char *nomCheminEnAffectation = NULL;
 %}
  /*
  %union {
@@ -22,6 +22,7 @@ char *affecterCheminName = NULL;
 }
 
 %token <scal> NB
+%token VARERROR
 %token DRAW
 %token FILL
 %token CYCLE
@@ -44,8 +45,8 @@ char *affecterCheminName = NULL;
 %type <str> translation
 %type <str> cycle
 %%
-	input : input line						{line++;affecterCheminName = NULL;}
-			| line 							{line++;affecterCheminName = NULL;}
+	input : input line						{line++;nomCheminEnAffectation = NULL;}
+			| line 							{line++;nomCheminEnAffectation = NULL;}
 			;
 	
 	line : commande 						{/*creer liste chaine*/;} liste EOI EOL {/*lire liste chaine*/;}
@@ -63,59 +64,66 @@ char *affecterCheminName = NULL;
 	list_coor : list_coor ',' VAR_NAME_COOR {
 												/*instanciation coor*/
 												printf("%s<<definition variable coor : %s >>%s\n", BLUE, $3, WHITE);
-												GlobalListeCoor = ajouterCoor(GlobalListeCoor, $3);
+												GlobalListeCoor = ajouterCoor(GlobalListeCoor, profondeur, $3);
 											}
 					|  VAR_NAME_COOR 		{
 												/*instanciation coor*/
 												printf("%s<<definition variable coor : %s >>%s\n", BLUE, $1, WHITE);
-												GlobalListeCoor = ajouterCoor(GlobalListeCoor, $1);
+												GlobalListeCoor = ajouterCoor(GlobalListeCoor, profondeur, $1);
+											}
+					| VARERROR				{
+												printf("%s<<erreur de definition : %s >>%s\n", RED, WHITE);
 											}
 					;
 					
 	list_pt : list_pt ',' VAR_NAME_PT 		{
 												/*instanciation pt*/
 												printf("%s<<definition variable pt : %s >>%s\n", BLUE, $3, WHITE);
-												GlobalListePoint = ajouterPoint(GlobalListePoint, $3);
+												GlobalListePoint = ajouterPoint(GlobalListePoint, profondeur, $3);
 											}
 					|  VAR_NAME_PT 			{
 												/*instanciation list*/;
 												printf("%s<<definition variable pt : %s >>%s\n", BLUE, $1, WHITE);
-												GlobalListePoint = ajouterPoint(GlobalListePoint, $1);
+												GlobalListePoint = ajouterPoint(GlobalListePoint, profondeur, $1);
 											}
 					;
 					
 	list_list : list_list ',' VAR_NAME_LIST {
 												/*instanciation list*/;
 												printf("%s<<definition variable list : %s >>%s\n", BLUE, $3, WHITE);
-												GlobalListeChemin = ajouterChemin(GlobalListeChemin, $3);
+												GlobalListeChemin = ajouterChemin(GlobalListeChemin, profondeur, $3);
+												/*printf("%s<<variable liste chemin globale >>%s\n", YELLOW, WHITE);
+												afficherChemins(GlobalListeChemin);			*/									
 											}
 					|  VAR_NAME_LIST 		{
 												/*instanciation list*/;
 												printf("%s<<definition variable list : %s >>%s\n", BLUE, $1, WHITE);
-												GlobalListeChemin = ajouterChemin(GlobalListeChemin, $1);
+												GlobalListeChemin = ajouterChemin(GlobalListeChemin, profondeur, $1);
+												/*printf("%s<<variable liste chemin globale >>%s\n", YELLOW, WHITE);
+												afficherChemins(GlobalListeChemin);*/
 											} 
 					;	
 					
 	affectation : VAR_NAME_COOR '=' expr 	{
 												/*lire liste chaine*/;
 												printf("%s<<affectation variable scal : %d to %s >>%s\n", BLUE, $3, $1, WHITE);
-												affecterCoor(GlobalListeCoor, $1, $3);
+												affecterCoor(GlobalListeCoor, profondeur, $1, $3);
 											}
 				| VAR_NAME_PT 				{
-												affecterPointName = $1;
+												nomPointEnAffectation = $1;
 											}
 					'=' point 				{
 												/*lire liste chaine*/;
 												printf("%s<<affectation variable point : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
-												printf("affecter point name debut : %s \n",affecterPointName);
+												printf("affecter point name debut : %s \n",nomPointEnAffectation);
 											}
 				| VAR_NAME_LIST 			{
-												affecterCheminName = $1;
+												nomCheminEnAffectation = $1;
 											}
 					'=' liste 				{
 												/*lire liste chaine*/;
 												printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
-												printf("affecter chemin name debut : %s \n",affecterCheminName);
+												printf("affecter chemin name debut : %s \n",nomCheminEnAffectation);
 											}
 				;
 		
@@ -125,43 +133,65 @@ char *affecterCheminName = NULL;
 			;*/
 			
 	commande : DRAW 						{draw();}
-		| FILL 								{draw();}
-		| error								{printf("%serreur de comande%s\n", RED,WHITE);}
-		;
+			| FILL 							{draw();}
+			| error							{printf("%serreur de comande%s\n", RED,WHITE);}
+			;
 	
-	liste : point 							{ {$$ = $1;}/*remplir liste chainee (dernier point)*/;}
-		| '+' translation 					{$$ = $2;}
-		| cycle
-		| point 							{/*remplir liste chainee*/;} SEPARATOR liste {}
-		| '+' translation SEPARATOR liste 	{}
-		| cycle SEPARATOR liste 			{}
-		;
+	liste : point 							{$$ = $1;/*remplir liste chainee (dernier point)*/;}
+			| '+' translation 				{$$ = $2;}
+			| cycle
+			| point 						{/*remplir liste chainee*/;}
+				SEPARATOR liste 			{}
+			| '+' translation 
+				SEPARATOR liste				{}
+			| cycle SEPARATOR liste 		{}
+			;
 		
 	point : '(' expr ',' expr ')' 			{
-												if(affecterPointName!= NULL)
+												if(nomPointEnAffectation!= NULL)
 												{
-													affecterPoint(GlobalListePoint, affecterPointName,$2, $4);
-													affecterPointName = NULL;
+													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation,$2, $4);
+													nomPointEnAffectation = NULL;
 												}else{
-													if(affecterCheminName != NULL){
-														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,affecterCheminName,$2,$4,WHITE);
-														affecterPointToChemin(GlobalListeChemin, affecterCheminName,$2, $4);
+													if(nomCheminEnAffectation != NULL){
+														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
+														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$2, $4);
 													}else{
 														dessiner_point($2, $4);
+													}
+												}
+											}
+					///////////////////////////////						
+					////EN CONSTRUCTION, verifier si un chemin est en construction et finir les nouvelles fonctions affecterPointAvecPoint affecterPointToCheminAvecPoint
+					///////////////////
+			| VAR_NAME_PT					{
+												if(nomPointEnAffectation!= NULL)
+												{
+													Point p = valeurPoint(GlobalListePoint, profondeur, $1);
+													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation, p->x, p->y);
+													nomPointEnAffectation = NULL;
+												}else{
+													if(nomCheminEnAffectation != NULL){
+														printf("%s<<affecterPointToCheminAvecPoint(%s)>>%s\n", BLUE,nomCheminEnAffectation,$1,WHITE);
+														Point p = valeurPoint(GlobalListePoint, profondeur, $1);
+														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation, p->x, p->y);
+													}else{
+														Point p = valeurPoint(GlobalListePoint, profondeur, $1);
+														dessiner_point(p->x, p->y);
 													}
 												}
 											}
 			| '(' expr ':' expr ')' 		{
 												$$[0] = $2 * cos($4) ; $$[1] = $2 * sin($4);
 										
-												if(affecterPointName != NULL)
+												if(nomPointEnAffectation != NULL)
 												{
-													affecterPoint(GlobalListePoint, affecterPointName,$2, $4);
-													affecterPointName = NULL;
+													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation,$2, $4);
+													nomPointEnAffectation = NULL;
 												}else{
-													if(affecterCheminName != NULL){
-														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,affecterCheminName,$2,$4,WHITE);
-														affecterPointToChemin(GlobalListeChemin, affecterCheminName,$2, $4);
+													if(nomCheminEnAffectation != NULL){
+														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
+														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$2, $4);
 													}else{
 														dessiner_point($$[0], $$[1]);
 													}
@@ -172,15 +202,24 @@ char *affecterCheminName = NULL;
 			;
 			
 	translation : '(' expr ',' expr ')' 	{dessiner_point(pointprec_x+$2, pointprec_y+$4);}
-			;
+				;
 
 	expr : expr '+' expr 					{$$=$1+$3;}
-		| expr '*' expr						{$$=$1*$3;}
-		| expr '-' expr 					{$$=$1-$3;}
-		| expr '/' expr 					{$$=$1/$3;}
-		| NB 								{$$=$1;}
-		| '(' expr ')' 						{$$=$2;}
-		| '-' expr %prec UMINUS 			{$$=-$2;}
+			| expr '*' expr					{$$=$1*$3;}
+			| expr '-' expr 				{$$=$1-$3;}
+			| expr '/' expr 				{$$=$1/$3;}
+			| NB 							{$$=$1;}
+			| '(' expr ')' 					{$$=$2;}
+			| '-' expr %prec UMINUS 		{$$=-$2;}
+			| VAR_NAME_COOR					{	
+												Coordonnee c = valeurCoor(GlobalListeCoor, profondeur,$1);
+												$$=c->valeur;
+												if($$ == NULL){
+													printf("%s<<variable %s n'existe pas !>>%s\n", RED,$1,WHITE);
+												}else{
+													printf("%s<<variable %s : %d>>%s\n", YELLOW,$1, $$,WHITE);
+												}
+											}
 			;
 
 %%
@@ -192,6 +231,7 @@ int main(void) {
 	GlobalListeCoor = NULL;
 	GlobalListePoint = NULL;
 	GlobalListeChemin = NULL;
+	profondeur = 0;
 	fres = fopen("res.c", "w+r+");
 	fprintf(fres,"#include <cairo.h> \n");
 	fprintf(fres,"#include <cairo-pdf.h> \n");
@@ -207,10 +247,10 @@ int main(void) {
 	fprintf(fres,"\treturn 0;\n}");
 	printf("Nb ligne %d \n", line);
 	printf("variables coordonnee stockees :\n");
-	afficherCoors(GlobalListeCoor);
+	afficherCoors(GlobalListeCoor, profondeur);
 	printf("variables point stockees :\n");
-	afficherPoints(GlobalListePoint);
+	afficherPoints(GlobalListePoint, profondeur);
 	printf("variables chemin stockees :\n");
-	afficherChemins(GlobalListeChemin);
+	afficherChemins(GlobalListeChemin, profondeur);
 	return EXIT_SUCCESS;
 }

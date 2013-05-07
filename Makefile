@@ -1,4 +1,4 @@
-projet : projet.y projet.l test.txt
+projet : projet.y projet.l test.txt functions.c functions.h
 	bison -d -v $@.y
 	lex $@.l
 	gcc functions.c lex.yy.c $@.tab.c -lfl -o $@ -lm

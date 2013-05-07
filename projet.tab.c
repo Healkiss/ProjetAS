@@ -70,8 +70,8 @@
 
 #include "functions.h"
 //est on en train d'affecter une variable ? Si oui, son nom :
-char *affecterPointName = NULL;
-char *affecterCheminName = NULL;
+char *nomPointEnAffectation = NULL;
+char *nomCheminEnAffectation = NULL;
 
 
 /* Line 268 of yacc.c  */
@@ -103,19 +103,20 @@ char *affecterCheminName = NULL;
       know about them.  */
    enum yytokentype {
      NB = 258,
-     DRAW = 259,
-     FILL = 260,
-     CYCLE = 261,
-     SEPARATOR = 262,
-     EOI = 263,
-     EOL = 264,
-     VAR_COOR = 265,
-     VAR_PT = 266,
-     VAR_LIST = 267,
-     VAR_NAME_COOR = 268,
-     VAR_NAME_PT = 269,
-     VAR_NAME_LIST = 270,
-     UMINUS = 271
+     VARERROR = 259,
+     DRAW = 260,
+     FILL = 261,
+     CYCLE = 262,
+     SEPARATOR = 263,
+     EOI = 264,
+     EOL = 265,
+     VAR_COOR = 266,
+     VAR_PT = 267,
+     VAR_LIST = 268,
+     VAR_NAME_COOR = 269,
+     VAR_NAME_PT = 270,
+     VAR_NAME_LIST = 271,
+     UMINUS = 272
    };
 #endif
 
@@ -134,7 +135,7 @@ typedef union YYSTYPE
 
 
 /* Line 293 of yacc.c  */
-#line 138 "projet.tab.c"
+#line 139 "projet.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -146,7 +147,7 @@ typedef union YYSTYPE
 
 
 /* Line 343 of yacc.c  */
-#line 150 "projet.tab.c"
+#line 151 "projet.tab.c"
 
 #ifdef short
 # undef short
@@ -363,22 +364,22 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  26
+#define YYFINAL  27
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   107
+#define YYLAST   111
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  26
+#define YYNTOKENS  27
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  18
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  44
+#define YYNRULES  47
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  87
+#define YYNSTATES  90
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   271
+#define YYMAXUTOK   272
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -390,9 +391,9 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      23,    24,    18,    16,    21,    17,     2,    19,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    25,     2,
-       2,    22,     2,     2,     2,     2,     2,     2,     2,     2,
+      24,    25,    19,    17,    22,    18,     2,    20,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    26,     2,
+       2,    23,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -413,7 +414,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    20
+      15,    16,    21
 };
 
 #if YYDEBUG
@@ -422,40 +423,41 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     6,     8,     9,    15,    19,    23,    27,
-      29,    32,    35,    38,    42,    44,    48,    50,    54,    56,
-      60,    61,    66,    67,    72,    74,    76,    78,    80,    83,
-      85,    86,    91,    96,   100,   106,   112,   114,   120,   124,
-     128,   132,   136,   138,   142
+      29,    32,    35,    38,    42,    44,    46,    50,    52,    56,
+      58,    62,    63,    68,    69,    74,    76,    78,    80,    82,
+      85,    87,    88,    93,    98,   102,   108,   110,   116,   118,
+     124,   128,   132,   136,   140,   142,   146,   149
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      27,     0,    -1,    27,    28,    -1,    28,    -1,    -1,    37,
-      29,    38,     8,     9,    -1,    30,     8,     9,    -1,    34,
-       8,     9,    -1,     1,     8,     9,    -1,     9,    -1,    10,
-      31,    -1,    11,    32,    -1,    12,    33,    -1,    31,    21,
-      13,    -1,    13,    -1,    32,    21,    14,    -1,    14,    -1,
-      33,    21,    15,    -1,    15,    -1,    13,    22,    43,    -1,
-      -1,    14,    35,    22,    40,    -1,    -1,    15,    36,    22,
-      38,    -1,     4,    -1,     5,    -1,     1,    -1,    40,    -1,
-      16,    42,    -1,    41,    -1,    -1,    40,    39,     7,    38,
-      -1,    16,    42,     7,    38,    -1,    41,     7,    38,    -1,
-      23,    43,    21,    43,    24,    -1,    23,    43,    25,    43,
-      24,    -1,     6,    -1,    23,    43,    21,    43,    24,    -1,
-      43,    16,    43,    -1,    43,    18,    43,    -1,    43,    17,
-      43,    -1,    43,    19,    43,    -1,     3,    -1,    23,    43,
-      24,    -1,    17,    43,    -1
+      28,     0,    -1,    28,    29,    -1,    29,    -1,    -1,    38,
+      30,    39,     9,    10,    -1,    31,     9,    10,    -1,    35,
+       9,    10,    -1,     1,     9,    10,    -1,    10,    -1,    11,
+      32,    -1,    12,    33,    -1,    13,    34,    -1,    32,    22,
+      14,    -1,    14,    -1,     4,    -1,    33,    22,    15,    -1,
+      15,    -1,    34,    22,    16,    -1,    16,    -1,    14,    23,
+      44,    -1,    -1,    15,    36,    23,    41,    -1,    -1,    16,
+      37,    23,    39,    -1,     5,    -1,     6,    -1,     1,    -1,
+      41,    -1,    17,    43,    -1,    42,    -1,    -1,    41,    40,
+       8,    39,    -1,    17,    43,     8,    39,    -1,    42,     8,
+      39,    -1,    24,    44,    22,    44,    25,    -1,    15,    -1,
+      24,    44,    26,    44,    25,    -1,     7,    -1,    24,    44,
+      22,    44,    25,    -1,    44,    17,    44,    -1,    44,    19,
+      44,    -1,    44,    18,    44,    -1,    44,    20,    44,    -1,
+       3,    -1,    24,    44,    25,    -1,    18,    44,    -1,    14,
+      -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    47,    47,    48,    51,    51,    52,    53,    54,    55,
-      58,    59,    60,    63,    68,    75,    80,    87,    92,    99,
-     104,   104,   112,   112,   127,   128,   129,   132,   133,   134,
-     135,   135,   136,   137,   140,   154,   171,   174,   177,   178,
-     179,   180,   181,   182,   183
+       0,    48,    48,    49,    52,    52,    53,    54,    55,    56,
+      59,    60,    61,    64,    69,    74,    79,    84,    91,    98,
+     107,   112,   112,   120,   120,   135,   136,   137,   140,   141,
+     142,   143,   143,   145,   147,   150,   167,   184,   201,   204,
+     207,   208,   209,   210,   211,   212,   213,   214
 };
 #endif
 
@@ -464,8 +466,8 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "NB", "DRAW", "FILL", "CYCLE",
-  "SEPARATOR", "EOI", "EOL", "VAR_COOR", "VAR_PT", "VAR_LIST",
+  "$end", "error", "$undefined", "NB", "VARERROR", "DRAW", "FILL",
+  "CYCLE", "SEPARATOR", "EOI", "EOL", "VAR_COOR", "VAR_PT", "VAR_LIST",
   "VAR_NAME_COOR", "VAR_NAME_PT", "VAR_NAME_LIST", "'+'", "'-'", "'*'",
   "'/'", "UMINUS", "','", "'='", "'('", "')'", "':'", "$accept", "input",
   "line", "$@1", "definition", "list_coor", "list_pt", "list_list",
@@ -480,29 +482,29 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,    43,    45,    42,    47,
-     271,    44,    61,    40,    41,    58
+     265,   266,   267,   268,   269,   270,   271,    43,    45,    42,
+      47,   272,    44,    61,    40,    41,    58
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    26,    27,    27,    29,    28,    28,    28,    28,    28,
-      30,    30,    30,    31,    31,    32,    32,    33,    33,    34,
-      35,    34,    36,    34,    37,    37,    37,    38,    38,    38,
-      39,    38,    38,    38,    40,    40,    41,    42,    43,    43,
-      43,    43,    43,    43,    43
+       0,    27,    28,    28,    30,    29,    29,    29,    29,    29,
+      31,    31,    31,    32,    32,    32,    33,    33,    34,    34,
+      35,    36,    35,    37,    35,    38,    38,    38,    39,    39,
+      39,    40,    39,    39,    39,    41,    41,    41,    42,    43,
+      44,    44,    44,    44,    44,    44,    44,    44
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     2,     1,     0,     5,     3,     3,     3,     1,
-       2,     2,     2,     3,     1,     3,     1,     3,     1,     3,
-       0,     4,     0,     4,     1,     1,     1,     1,     2,     1,
-       0,     4,     4,     3,     5,     5,     1,     5,     3,     3,
-       3,     3,     1,     3,     2
+       2,     2,     2,     3,     1,     1,     3,     1,     3,     1,
+       3,     0,     4,     0,     4,     1,     1,     1,     1,     2,
+       1,     0,     4,     4,     3,     5,     1,     5,     1,     5,
+       3,     3,     3,     3,     1,     3,     2,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default reduction number in state STATE-NUM.
@@ -510,100 +512,102 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    26,    24,    25,     9,     0,     0,     0,     0,    20,
-      22,     0,     3,     0,     0,     4,     0,    14,    10,    16,
-      11,    18,    12,     0,     0,     0,     1,     2,     0,     0,
-       0,     8,     0,     0,     0,    42,     0,     0,    19,     0,
-       0,     6,     7,    36,     0,     0,     0,    27,    29,    13,
-      15,    17,    44,     0,     0,     0,     0,     0,    21,    23,
-       0,    28,     0,     0,     0,     0,    43,    38,    40,    39,
-      41,     0,     0,     0,     0,     5,     0,    33,     0,    32,
-       0,     0,    31,     0,    34,    35,    37
+       0,    27,    25,    26,     9,     0,     0,     0,     0,    21,
+      23,     0,     3,     0,     0,     4,     0,    15,    14,    10,
+      17,    11,    19,    12,     0,     0,     0,     1,     2,     0,
+       0,     0,     8,     0,     0,     0,    44,    47,     0,     0,
+      20,     0,     0,     6,     7,    38,    36,     0,     0,     0,
+      28,    30,    13,    16,    18,    46,     0,     0,     0,     0,
+       0,    22,    24,     0,    29,     0,     0,     0,     0,    45,
+      40,    42,    41,    43,     0,     0,     0,     0,     5,     0,
+      34,     0,    33,     0,     0,    32,     0,    35,    37,    39
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    11,    12,    30,    13,    18,    20,    22,    14,    24,
-      25,    15,    46,    64,    47,    48,    61,    38
+      -1,    11,    12,    31,    13,    19,    21,    23,    14,    25,
+      26,    15,    49,    67,    50,    51,    64,    40
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -38
+#define YYPACT_NINF -40
 static const yytype_int8 yypact[] =
 {
-      55,    -4,   -38,   -38,   -38,     2,     3,    10,     4,   -38,
-     -38,    40,   -38,    19,    21,   -38,    34,   -38,    25,   -38,
-      26,   -38,    27,    -1,    35,    36,   -38,   -38,    52,    53,
-       7,   -38,    50,    57,    66,   -38,    -1,    -1,    82,    59,
-       7,   -38,   -38,   -38,    71,    -1,    75,    88,    89,   -38,
-     -38,   -38,   -38,    56,    -1,    -1,    -1,    -1,   -38,   -38,
-      -1,    95,   -11,    94,    97,     7,   -38,    -7,    -7,   -38,
-     -38,    15,     7,    -1,    -1,   -38,     7,   -38,    -1,   -38,
-      60,    69,   -38,    73,   -38,   -38,   -38
+      57,    -4,   -40,   -40,   -40,     0,    -3,    12,    14,   -40,
+     -40,    41,   -40,    23,    25,   -40,    34,   -40,   -40,    13,
+     -40,    26,   -40,    27,    -1,    22,    36,   -40,   -40,    40,
+      50,     9,   -40,    47,    49,    68,   -40,   -40,    -1,    -1,
+      90,     3,     9,   -40,   -40,   -40,   -40,    42,    -1,    56,
+      66,    77,   -40,   -40,   -40,   -40,    58,    -1,    -1,    -1,
+      -1,   -40,   -40,    -1,    78,   -11,    87,    91,     9,   -40,
+      11,    11,   -40,   -40,    84,     9,    -1,    -1,   -40,     9,
+     -40,    -1,   -40,    62,    71,   -40,    75,   -40,   -40,   -40
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -38,   -38,    96,   -38,   -38,   -38,   -38,   -38,   -38,   -38,
-     -38,   -38,   -37,   -38,    67,   -38,   -38,   -36
+     -40,   -40,    94,   -40,   -40,   -40,   -40,   -40,   -40,   -40,
+     -40,   -40,   -39,   -40,    70,   -40,   -40,   -38
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -31
+#define YYTABLE_NINF -32
 static const yytype_int8 yytable[] =
 {
-      52,    53,    35,    59,    16,    54,    55,    56,    57,    62,
-      73,    56,    57,    43,    74,    17,    36,    19,    67,    68,
-      69,    70,    37,    44,    71,    21,    23,    28,    77,    29,
-      45,    54,    55,    56,    57,    79,    78,    80,    81,    82,
-      26,     1,    83,    31,     2,     3,    32,    33,    34,     4,
-       5,     6,     7,     8,     9,    10,     1,    39,    40,     2,
-       3,    41,    42,    49,     4,     5,     6,     7,     8,     9,
-      10,    50,    54,    55,    56,    57,    54,    55,    56,    57,
-      66,    51,    45,    63,    84,    54,    55,    56,    57,    54,
-      55,    56,    57,    85,    60,   -30,    65,    86,    54,    55,
-      56,    57,    72,    75,    76,     0,    58,    27
+      55,    56,    36,    62,    17,    16,    57,    58,    59,    60,
+      65,    76,    20,    37,    18,    77,    45,    38,    46,    70,
+      71,    72,    73,    39,    46,    74,    47,    48,    22,    80,
+      59,    60,    29,    48,    30,    33,    82,    24,    83,    84,
+      85,    27,     1,    86,    32,    41,     2,     3,    34,    35,
+      43,     4,     5,     6,     7,     8,     9,    10,     1,    42,
+      44,    52,     2,     3,    53,    66,    63,     4,     5,     6,
+       7,     8,     9,    10,   -31,    57,    58,    59,    60,    57,
+      58,    59,    60,    69,    54,    68,    75,    87,    57,    58,
+      59,    60,    57,    58,    59,    60,    88,    78,     0,    79,
+      89,    57,    58,    59,    60,    28,    81,    57,    58,    59,
+      60,    61
 };
 
 #define yypact_value_is_default(yystate) \
-  ((yystate) == (-38))
+  ((yystate) == (-40))
 
 #define yytable_value_is_error(yytable_value) \
   YYID (0)
 
 static const yytype_int8 yycheck[] =
 {
-      36,    37,     3,    40,     8,    16,    17,    18,    19,    45,
-      21,    18,    19,     6,    25,    13,    17,    14,    54,    55,
-      56,    57,    23,    16,    60,    15,    22,     8,    65,     8,
-      23,    16,    17,    18,    19,    72,    21,    73,    74,    76,
-       0,     1,    78,     9,     4,     5,    21,    21,    21,     9,
-      10,    11,    12,    13,    14,    15,     1,    22,    22,     4,
-       5,     9,     9,    13,     9,    10,    11,    12,    13,    14,
-      15,    14,    16,    17,    18,    19,    16,    17,    18,    19,
-      24,    15,    23,     8,    24,    16,    17,    18,    19,    16,
-      17,    18,    19,    24,    23,     7,     7,    24,    16,    17,
-      18,    19,     7,     9,     7,    -1,    39,    11
+      38,    39,     3,    42,     4,     9,    17,    18,    19,    20,
+      48,    22,    15,    14,    14,    26,     7,    18,    15,    57,
+      58,    59,    60,    24,    15,    63,    17,    24,    16,    68,
+      19,    20,     9,    24,     9,    22,    75,    23,    76,    77,
+      79,     0,     1,    81,    10,    23,     5,     6,    22,    22,
+      10,    10,    11,    12,    13,    14,    15,    16,     1,    23,
+      10,    14,     5,     6,    15,     9,    24,    10,    11,    12,
+      13,    14,    15,    16,     8,    17,    18,    19,    20,    17,
+      18,    19,    20,    25,    16,     8,     8,    25,    17,    18,
+      19,    20,    17,    18,    19,    20,    25,    10,    -1,     8,
+      25,    17,    18,    19,    20,    11,    22,    17,    18,    19,
+      20,    41
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     1,     4,     5,     9,    10,    11,    12,    13,    14,
-      15,    27,    28,    30,    34,    37,     8,    13,    31,    14,
-      32,    15,    33,    22,    35,    36,     0,    28,     8,     8,
-      29,     9,    21,    21,    21,     3,    17,    23,    43,    22,
-      22,     9,     9,     6,    16,    23,    38,    40,    41,    13,
-      14,    15,    43,    43,    16,    17,    18,    19,    40,    38,
-      23,    42,    43,     8,    39,     7,    24,    43,    43,    43,
-      43,    43,     7,    21,    25,     9,     7,    38,    21,    38,
-      43,    43,    38,    43,    24,    24,    24
+       0,     1,     5,     6,    10,    11,    12,    13,    14,    15,
+      16,    28,    29,    31,    35,    38,     9,     4,    14,    32,
+      15,    33,    16,    34,    23,    36,    37,     0,    29,     9,
+       9,    30,    10,    22,    22,    22,     3,    14,    18,    24,
+      44,    23,    23,    10,    10,     7,    15,    17,    24,    39,
+      41,    42,    14,    15,    16,    44,    44,    17,    18,    19,
+      20,    41,    39,    24,    43,    44,     9,    40,     8,    25,
+      44,    44,    44,    44,    44,     8,    22,    26,    10,     8,
+      39,    22,    39,    44,    44,    39,    44,    25,    25,    25
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1440,290 +1444,281 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 47 "projet.y"
-    {line++;affecterCheminName = NULL;}
+#line 48 "projet.y"
+    {line++;nomCheminEnAffectation = NULL;}
     break;
 
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 48 "projet.y"
-    {line++;affecterCheminName = NULL;}
+#line 49 "projet.y"
+    {line++;nomCheminEnAffectation = NULL;}
     break;
 
   case 4:
 
 /* Line 1806 of yacc.c  */
-#line 51 "projet.y"
+#line 52 "projet.y"
     {/*creer liste chaine*/;}
     break;
 
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 51 "projet.y"
+#line 52 "projet.y"
     {/*lire liste chaine*/;}
     break;
 
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 52 "projet.y"
+#line 53 "projet.y"
     {printf("%sdefinition termine%s \n", GREEN,WHITE);}
     break;
 
   case 7:
 
 /* Line 1806 of yacc.c  */
-#line 53 "projet.y"
+#line 54 "projet.y"
     {printf("%saffectation termine%s \n", GREEN,WHITE);}
     break;
 
   case 8:
 
 /* Line 1806 of yacc.c  */
-#line 54 "projet.y"
+#line 55 "projet.y"
     {printf("%serreur : ligne mal formee%s\n", RED,WHITE);}
     break;
 
   case 10:
 
 /* Line 1806 of yacc.c  */
-#line 58 "projet.y"
+#line 59 "projet.y"
     {/*instanciation coor*/}
     break;
 
   case 11:
 
 /* Line 1806 of yacc.c  */
-#line 59 "projet.y"
+#line 60 "projet.y"
     {/*instanciation pt*/}
     break;
 
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 60 "projet.y"
+#line 61 "projet.y"
     {/*instanciation list*/}
     break;
 
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 63 "projet.y"
+#line 64 "projet.y"
     {
 												/*instanciation coor*/
 												printf("%s<<definition variable coor : %s >>%s\n", BLUE, (yyvsp[(3) - (3)].str), WHITE);
-												GlobalListeCoor = ajouterCoor(GlobalListeCoor, (yyvsp[(3) - (3)].str));
+												GlobalListeCoor = ajouterCoor(GlobalListeCoor, profondeur, (yyvsp[(3) - (3)].str));
 											}
     break;
 
   case 14:
 
 /* Line 1806 of yacc.c  */
-#line 68 "projet.y"
+#line 69 "projet.y"
     {
 												/*instanciation coor*/
 												printf("%s<<definition variable coor : %s >>%s\n", BLUE, (yyvsp[(1) - (1)].str), WHITE);
-												GlobalListeCoor = ajouterCoor(GlobalListeCoor, (yyvsp[(1) - (1)].str));
+												GlobalListeCoor = ajouterCoor(GlobalListeCoor, profondeur, (yyvsp[(1) - (1)].str));
 											}
     break;
 
   case 15:
 
 /* Line 1806 of yacc.c  */
-#line 75 "projet.y"
+#line 74 "projet.y"
     {
-												/*instanciation pt*/
-												printf("%s<<definition variable pt : %s >>%s\n", BLUE, (yyvsp[(3) - (3)].str), WHITE);
-												GlobalListePoint = ajouterPoint(GlobalListePoint, (yyvsp[(3) - (3)].str));
+												printf("%s<<erreur de definition : %s >>%s\n", RED, WHITE);
 											}
     break;
 
   case 16:
 
 /* Line 1806 of yacc.c  */
-#line 80 "projet.y"
+#line 79 "projet.y"
     {
-												/*instanciation list*/;
-												printf("%s<<definition variable pt : %s >>%s\n", BLUE, (yyvsp[(1) - (1)].str), WHITE);
-												GlobalListePoint = ajouterPoint(GlobalListePoint, (yyvsp[(1) - (1)].str));
+												/*instanciation pt*/
+												printf("%s<<definition variable pt : %s >>%s\n", BLUE, (yyvsp[(3) - (3)].str), WHITE);
+												GlobalListePoint = ajouterPoint(GlobalListePoint, profondeur, (yyvsp[(3) - (3)].str));
 											}
     break;
 
   case 17:
 
 /* Line 1806 of yacc.c  */
-#line 87 "projet.y"
+#line 84 "projet.y"
     {
 												/*instanciation list*/;
-												printf("%s<<definition variable list : %s >>%s\n", BLUE, (yyvsp[(3) - (3)].str), WHITE);
-												GlobalListeChemin = ajouterChemin(GlobalListeChemin, (yyvsp[(3) - (3)].str));
+												printf("%s<<definition variable pt : %s >>%s\n", BLUE, (yyvsp[(1) - (1)].str), WHITE);
+												GlobalListePoint = ajouterPoint(GlobalListePoint, profondeur, (yyvsp[(1) - (1)].str));
 											}
     break;
 
   case 18:
 
 /* Line 1806 of yacc.c  */
-#line 92 "projet.y"
+#line 91 "projet.y"
     {
 												/*instanciation list*/;
-												printf("%s<<definition variable list : %s >>%s\n", BLUE, (yyvsp[(1) - (1)].str), WHITE);
-												GlobalListeChemin = ajouterChemin(GlobalListeChemin, (yyvsp[(1) - (1)].str));
+												printf("%s<<definition variable list : %s >>%s\n", BLUE, (yyvsp[(3) - (3)].str), WHITE);
+												GlobalListeChemin = ajouterChemin(GlobalListeChemin, profondeur, (yyvsp[(3) - (3)].str));
+												/*printf("%s<<variable liste chemin globale >>%s\n", YELLOW, WHITE);
+												afficherChemins(GlobalListeChemin);			*/									
 											}
     break;
 
   case 19:
 
 /* Line 1806 of yacc.c  */
-#line 99 "projet.y"
+#line 98 "projet.y"
     {
-												/*lire liste chaine*/;
-												printf("%s<<affectation variable scal : %d to %s >>%s\n", BLUE, (yyvsp[(3) - (3)].scal), (yyvsp[(1) - (3)].str), WHITE);
-												affecterCoor(GlobalListeCoor, (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].scal));
+												/*instanciation list*/;
+												printf("%s<<definition variable list : %s >>%s\n", BLUE, (yyvsp[(1) - (1)].str), WHITE);
+												GlobalListeChemin = ajouterChemin(GlobalListeChemin, profondeur, (yyvsp[(1) - (1)].str));
+												/*printf("%s<<variable liste chemin globale >>%s\n", YELLOW, WHITE);
+												afficherChemins(GlobalListeChemin);*/
 											}
     break;
 
   case 20:
 
 /* Line 1806 of yacc.c  */
-#line 104 "projet.y"
+#line 107 "projet.y"
     {
-												affecterPointName = (yyvsp[(1) - (1)].str);
+												/*lire liste chaine*/;
+												printf("%s<<affectation variable scal : %d to %s >>%s\n", BLUE, (yyvsp[(3) - (3)].scal), (yyvsp[(1) - (3)].str), WHITE);
+												affecterCoor(GlobalListeCoor, profondeur, (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].scal));
 											}
     break;
 
   case 21:
 
 /* Line 1806 of yacc.c  */
-#line 107 "projet.y"
+#line 112 "projet.y"
     {
-												/*lire liste chaine*/;
-												printf("%s<<affectation variable point : %s to %s >>%s\n", BLUE, "3", (yyvsp[(1) - (4)].str), WHITE);
-												printf("affecter point name debut : %s \n",affecterPointName);
+												nomPointEnAffectation = (yyvsp[(1) - (1)].str);
 											}
     break;
 
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 112 "projet.y"
+#line 115 "projet.y"
     {
-												affecterCheminName = (yyvsp[(1) - (1)].str);
+												/*lire liste chaine*/;
+												printf("%s<<affectation variable point : %s to %s >>%s\n", BLUE, "3", (yyvsp[(1) - (4)].str), WHITE);
+												printf("affecter point name debut : %s \n",nomPointEnAffectation);
 											}
     break;
 
   case 23:
 
 /* Line 1806 of yacc.c  */
-#line 115 "projet.y"
+#line 120 "projet.y"
     {
-												/*lire liste chaine*/;
-												printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", (yyvsp[(1) - (4)].str), WHITE);
-												printf("affecter chemin name debut : %s \n",affecterCheminName);
+												nomCheminEnAffectation = (yyvsp[(1) - (1)].str);
 											}
     break;
 
   case 24:
 
 /* Line 1806 of yacc.c  */
-#line 127 "projet.y"
-    {draw();}
+#line 123 "projet.y"
+    {
+												/*lire liste chaine*/;
+												printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", (yyvsp[(1) - (4)].str), WHITE);
+												printf("affecter chemin name debut : %s \n",nomCheminEnAffectation);
+											}
     break;
 
   case 25:
 
 /* Line 1806 of yacc.c  */
-#line 128 "projet.y"
+#line 135 "projet.y"
     {draw();}
     break;
 
   case 26:
 
 /* Line 1806 of yacc.c  */
-#line 129 "projet.y"
-    {printf("%serreur de comande%s\n", RED,WHITE);}
+#line 136 "projet.y"
+    {draw();}
     break;
 
   case 27:
 
 /* Line 1806 of yacc.c  */
-#line 132 "projet.y"
-    { {(yyval.str) = (yyvsp[(1) - (1)].str);}/*remplir liste chainee (dernier point)*/;}
+#line 137 "projet.y"
+    {printf("%serreur de comande%s\n", RED,WHITE);}
     break;
 
   case 28:
 
 /* Line 1806 of yacc.c  */
-#line 133 "projet.y"
-    {(yyval.str) = (yyvsp[(2) - (2)].str);}
+#line 140 "projet.y"
+    {(yyval.str) = (yyvsp[(1) - (1)].str);/*remplir liste chainee (dernier point)*/;}
     break;
 
-  case 30:
+  case 29:
 
 /* Line 1806 of yacc.c  */
-#line 135 "projet.y"
-    {/*remplir liste chainee*/;}
+#line 141 "projet.y"
+    {(yyval.str) = (yyvsp[(2) - (2)].str);}
     break;
 
   case 31:
 
 /* Line 1806 of yacc.c  */
-#line 135 "projet.y"
-    {}
+#line 143 "projet.y"
+    {/*remplir liste chainee*/;}
     break;
 
   case 32:
 
 /* Line 1806 of yacc.c  */
-#line 136 "projet.y"
+#line 144 "projet.y"
     {}
     break;
 
   case 33:
 
 /* Line 1806 of yacc.c  */
-#line 137 "projet.y"
+#line 146 "projet.y"
     {}
     break;
 
   case 34:
 
 /* Line 1806 of yacc.c  */
-#line 140 "projet.y"
-    {
-												if(affecterPointName!= NULL)
-												{
-													affecterPoint(GlobalListePoint, affecterPointName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-													affecterPointName = NULL;
-												}else{
-													if(affecterCheminName != NULL){
-														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,affecterCheminName,(yyvsp[(2) - (5)].scal),(yyvsp[(4) - (5)].scal),WHITE);
-														affecterPointToChemin(GlobalListeChemin, affecterCheminName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-													}else{
-														dessiner_point((yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-													}
-												}
-											}
+#line 147 "projet.y"
+    {}
     break;
 
   case 35:
 
 /* Line 1806 of yacc.c  */
-#line 154 "projet.y"
+#line 150 "projet.y"
     {
-												(yyval.str)[0] = (yyvsp[(2) - (5)].scal) * cos((yyvsp[(4) - (5)].scal)) ; (yyval.str)[1] = (yyvsp[(2) - (5)].scal) * sin((yyvsp[(4) - (5)].scal));
-										
-												if(affecterPointName != NULL)
+												if(nomPointEnAffectation!= NULL)
 												{
-													affecterPoint(GlobalListePoint, affecterPointName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
-													affecterPointName = NULL;
+													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													nomPointEnAffectation = NULL;
 												}else{
-													if(affecterCheminName != NULL){
-														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,affecterCheminName,(yyvsp[(2) - (5)].scal),(yyvsp[(4) - (5)].scal),WHITE);
-														affecterPointToChemin(GlobalListeChemin, affecterCheminName,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													if(nomCheminEnAffectation != NULL){
+														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,nomCheminEnAffectation,(yyvsp[(2) - (5)].scal),(yyvsp[(4) - (5)].scal),WHITE);
+														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
 													}else{
-														dessiner_point((yyval.str)[0], (yyval.str)[1]);
+														dessiner_point((yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
 													}
 												}
 											}
@@ -1732,70 +1727,130 @@ yyreduce:
   case 36:
 
 /* Line 1806 of yacc.c  */
-#line 171 "projet.y"
-    {dessiner_point(premierpoint_x, premierpoint_y);}
+#line 167 "projet.y"
+    {
+												if(nomPointEnAffectation!= NULL)
+												{
+													Point p = valeurPoint(GlobalListePoint, profondeur, (yyvsp[(1) - (1)].str));
+													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation, p->x, p->y);
+													nomPointEnAffectation = NULL;
+												}else{
+													if(nomCheminEnAffectation != NULL){
+														printf("%s<<affecterPointToCheminAvecPoint(%s)>>%s\n", BLUE,nomCheminEnAffectation,(yyvsp[(1) - (1)].str),WHITE);
+														Point p = valeurPoint(GlobalListePoint, profondeur, (yyvsp[(1) - (1)].str));
+														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation, p->x, p->y);
+													}else{
+														Point p = valeurPoint(GlobalListePoint, profondeur, (yyvsp[(1) - (1)].str));
+														dessiner_point(p->x, p->y);
+													}
+												}
+											}
     break;
 
   case 37:
 
 /* Line 1806 of yacc.c  */
-#line 174 "projet.y"
-    {dessiner_point(pointprec_x+(yyvsp[(2) - (5)].scal), pointprec_y+(yyvsp[(4) - (5)].scal));}
+#line 184 "projet.y"
+    {
+												(yyval.str)[0] = (yyvsp[(2) - (5)].scal) * cos((yyvsp[(4) - (5)].scal)) ; (yyval.str)[1] = (yyvsp[(2) - (5)].scal) * sin((yyvsp[(4) - (5)].scal));
+										
+												if(nomPointEnAffectation != NULL)
+												{
+													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													nomPointEnAffectation = NULL;
+												}else{
+													if(nomCheminEnAffectation != NULL){
+														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,nomCheminEnAffectation,(yyvsp[(2) - (5)].scal),(yyvsp[(4) - (5)].scal),WHITE);
+														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,(yyvsp[(2) - (5)].scal), (yyvsp[(4) - (5)].scal));
+													}else{
+														dessiner_point((yyval.str)[0], (yyval.str)[1]);
+													}
+												}
+											}
     break;
 
   case 38:
 
 /* Line 1806 of yacc.c  */
-#line 177 "projet.y"
-    {(yyval.scal)=(yyvsp[(1) - (3)].scal)+(yyvsp[(3) - (3)].scal);}
+#line 201 "projet.y"
+    {dessiner_point(premierpoint_x, premierpoint_y);}
     break;
 
   case 39:
 
 /* Line 1806 of yacc.c  */
-#line 178 "projet.y"
-    {(yyval.scal)=(yyvsp[(1) - (3)].scal)*(yyvsp[(3) - (3)].scal);}
+#line 204 "projet.y"
+    {dessiner_point(pointprec_x+(yyvsp[(2) - (5)].scal), pointprec_y+(yyvsp[(4) - (5)].scal));}
     break;
 
   case 40:
 
 /* Line 1806 of yacc.c  */
-#line 179 "projet.y"
-    {(yyval.scal)=(yyvsp[(1) - (3)].scal)-(yyvsp[(3) - (3)].scal);}
+#line 207 "projet.y"
+    {(yyval.scal)=(yyvsp[(1) - (3)].scal)+(yyvsp[(3) - (3)].scal);}
     break;
 
   case 41:
 
 /* Line 1806 of yacc.c  */
-#line 180 "projet.y"
-    {(yyval.scal)=(yyvsp[(1) - (3)].scal)/(yyvsp[(3) - (3)].scal);}
+#line 208 "projet.y"
+    {(yyval.scal)=(yyvsp[(1) - (3)].scal)*(yyvsp[(3) - (3)].scal);}
     break;
 
   case 42:
 
 /* Line 1806 of yacc.c  */
-#line 181 "projet.y"
-    {(yyval.scal)=(yyvsp[(1) - (1)].scal);}
+#line 209 "projet.y"
+    {(yyval.scal)=(yyvsp[(1) - (3)].scal)-(yyvsp[(3) - (3)].scal);}
     break;
 
   case 43:
 
 /* Line 1806 of yacc.c  */
-#line 182 "projet.y"
-    {(yyval.scal)=(yyvsp[(2) - (3)].scal);}
+#line 210 "projet.y"
+    {(yyval.scal)=(yyvsp[(1) - (3)].scal)/(yyvsp[(3) - (3)].scal);}
     break;
 
   case 44:
 
 /* Line 1806 of yacc.c  */
-#line 183 "projet.y"
+#line 211 "projet.y"
+    {(yyval.scal)=(yyvsp[(1) - (1)].scal);}
+    break;
+
+  case 45:
+
+/* Line 1806 of yacc.c  */
+#line 212 "projet.y"
+    {(yyval.scal)=(yyvsp[(2) - (3)].scal);}
+    break;
+
+  case 46:
+
+/* Line 1806 of yacc.c  */
+#line 213 "projet.y"
     {(yyval.scal)=-(yyvsp[(2) - (2)].scal);}
+    break;
+
+  case 47:
+
+/* Line 1806 of yacc.c  */
+#line 214 "projet.y"
+    {	
+												Coordonnee c = valeurCoor(GlobalListeCoor, profondeur,(yyvsp[(1) - (1)].str));
+												(yyval.scal)=c->valeur;
+												if((yyval.scal) == NULL){
+													printf("%s<<variable %s n'existe pas !>>%s\n", RED,(yyvsp[(1) - (1)].str),WHITE);
+												}else{
+													printf("%s<<variable %s : %d>>%s\n", YELLOW,(yyvsp[(1) - (1)].str), (yyval.scal),WHITE);
+												}
+											}
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 1799 "projet.tab.c"
+#line 1854 "projet.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2026,7 +2081,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 186 "projet.y"
+#line 225 "projet.y"
 
 
 int yyerror(char *s) {
@@ -2036,6 +2091,7 @@ int main(void) {
 	GlobalListeCoor = NULL;
 	GlobalListePoint = NULL;
 	GlobalListeChemin = NULL;
+	profondeur = 0;
 	fres = fopen("res.c", "w+r+");
 	fprintf(fres,"#include <cairo.h> \n");
 	fprintf(fres,"#include <cairo-pdf.h> \n");
@@ -2051,11 +2107,11 @@ int main(void) {
 	fprintf(fres,"\treturn 0;\n}");
 	printf("Nb ligne %d \n", line);
 	printf("variables coordonnee stockees :\n");
-	afficherCoors(GlobalListeCoor);
+	afficherCoors(GlobalListeCoor, profondeur);
 	printf("variables point stockees :\n");
-	afficherPoints(GlobalListePoint);
+	afficherPoints(GlobalListePoint, profondeur);
 	printf("variables chemin stockees :\n");
-	afficherChemins(GlobalListeChemin);
+	afficherChemins(GlobalListeChemin, profondeur);
 	return EXIT_SUCCESS;
 }
 
