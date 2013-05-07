@@ -1,0 +1,3 @@
+toutes les variables sont initialisée a 0
+les operations de type variable = variable sont autorisé mais ne font pas une copie du pointeur, mais de leur valeur courante.
+Valeurs de scalaire negative interdite
