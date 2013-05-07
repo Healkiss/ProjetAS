@@ -21,9 +21,16 @@ Couleurs pour la console (differencier message d'erreur, informatif, succes ..)
 
 
 /// PROBLEMES A RESOUDRE ///
- Amliorer grammaire pour l'affectation qui n'a pas l'air de fonctionner
+ Ameliorer grammaire pour l'affectation qui n'a pas l'air de fonctionner
 Passer des chaines pour par exemple envoyer le nom de la variable et la stocker
 
 /// SUITE ///
 Rajouter la gestion des 3 listes, faire une fonction de recherches dans ces listes pour trouver si la variable existe, la modifier ..
 
+
+4/05
+Ajout des coordonnées polaire -> cartesienne a la source (des la construction du point et l'enregistrement)
+
+Generisation des liste, avant on ne pouvait que modifier les listes globals, maintenant il suffit d'envoyer la liste qu'on veut modifier et la recuperer a la sortie de la fonction.
+Coordonnée, points marche donc
+mais erreurs dans les files pour les chemins.

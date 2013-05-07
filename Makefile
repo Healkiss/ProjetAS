@@ -1,7 +1,7 @@
 projet : projet.y projet.l test.txt
 	bison -d -v $@.y
 	lex $@.l
-	gcc functions.c lex.yy.c $@.tab.c -lfl -o $@
+	gcc functions.c lex.yy.c $@.tab.c -lfl -o $@ -lm
 	echo "---"
 	./$@ < test.txt
 
