@@ -1,26 +1,26 @@
-Nonterminals useless in grammar
+Non-terminaux inutiles dans la grammaire
 
    coloration
 
 
-Terminals unused in grammar
+Terminaux inutilisés dans la grammaire
 
    SET_COLOR
 
 
-Rules useless in grammar
+Règles inutiles dans la grammaire
 
    48 coloration: SET_COLOR
 
 
-Grammar
+Grammaire
 
     0 $accept: input $end
 
     1 input: input line
     2      | line
 
-    3 $@1: /* empty */
+    3 $@1: /* vide */
 
     4 line: commande $@1 liste EOI EOL
     5     | definition EOI EOL
@@ -44,11 +44,11 @@ Grammar
 
    19 affectation: VAR_NAME_COOR '=' expr
 
-   20 $@2: /* empty */
+   20 $@2: /* vide */
 
    21 affectation: VAR_NAME_PT $@2 '=' point
 
-   22 $@3: /* empty */
+   22 $@3: /* vide */
 
    23 affectation: VAR_NAME_LIST $@3 '=' liste
 
@@ -60,7 +60,7 @@ Grammar
    28      | '+' translation
    29      | cycle
 
-   30 $@4: /* empty */
+   30 $@4: /* vide */
 
    31 liste: point $@4 SEPARATOR liste
    32      | '+' translation SEPARATOR liste
@@ -85,7 +85,7 @@ Grammar
    47     | VAR_NAME_COOR
 
 
-Terminals, with rules where they appear
+Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
 '(' (40) 35 37 39 45
@@ -116,407 +116,407 @@ VAR_NAME_LIST (272) 17 18 23 34
 UMINUS (273)
 
 
-Nonterminals, with rules where they appear
+Non-terminaux, suivis des règles où ils apparaissent
 
 $accept (28)
-    on left: 0
+    à gauche: 0
 input (29)
-    on left: 1 2, on right: 0 1
+    à gauche: 1 2, à droite: 0 1
 line (30)
-    on left: 4 5 6 7 8, on right: 1 2
+    à gauche: 4 5 6 7 8, à droite: 1 2
 $@1 (31)
-    on left: 3, on right: 4
+    à gauche: 3, à droite: 4
 definition (32)
-    on left: 9 10 11, on right: 5
+    à gauche: 9 10 11, à droite: 5
 list_coor (33)
-    on left: 12 13 14, on right: 9 12
+    à gauche: 12 13 14, à droite: 9 12
 list_pt (34)
-    on left: 15 16, on right: 10 15
+    à gauche: 15 16, à droite: 10 15
 list_list (35)
-    on left: 17 18, on right: 11 17
+    à gauche: 17 18, à droite: 11 17
 affectation (36)
-    on left: 19 21 23, on right: 6
+    à gauche: 19 21 23, à droite: 6
 $@2 (37)
-    on left: 20, on right: 21
+    à gauche: 20, à droite: 21
 $@3 (38)
-    on left: 22, on right: 23
+    à gauche: 22, à droite: 23
 commande (39)
-    on left: 24 25 26, on right: 4
+    à gauche: 24 25 26, à droite: 4
 liste (40)
-    on left: 27 28 29 31 32 33 34, on right: 4 23 31 32 33
+    à gauche: 27 28 29 31 32 33 34, à droite: 4 23 31 32 33
 $@4 (41)
-    on left: 30, on right: 31
+    à gauche: 30, à droite: 31
 point (42)
-    on left: 35 36 37, on right: 21 27 31
+    à gauche: 35 36 37, à droite: 21 27 31
 cycle (43)
-    on left: 38, on right: 29 33
+    à gauche: 38, à droite: 29 33
 translation (44)
-    on left: 39, on right: 28 32
+    à gauche: 39, à droite: 28 32
 expr (45)
-    on left: 40 41 42 43 44 45 46 47, on right: 19 35 37 39 40 41 42
-    43 45 46
+    à gauche: 40 41 42 43 44 45 46 47, à droite: 19 35 37 39 40 41
+    42 43 45 46
 
 
-state 0
+état 0
 
     0 $accept: . input $end
 
-    error          shift, and go to state 1
-    DRAW           shift, and go to state 2
-    FILL           shift, and go to state 3
-    EOL            shift, and go to state 4
-    VAR_COOR       shift, and go to state 5
-    VAR_PT         shift, and go to state 6
-    VAR_LIST       shift, and go to state 7
-    VAR_NAME_COOR  shift, and go to state 8
-    VAR_NAME_PT    shift, and go to state 9
-    VAR_NAME_LIST  shift, and go to state 10
+    error          décalage et aller à l'état 1
+    DRAW           décalage et aller à l'état 2
+    FILL           décalage et aller à l'état 3
+    EOL            décalage et aller à l'état 4
+    VAR_COOR       décalage et aller à l'état 5
+    VAR_PT         décalage et aller à l'état 6
+    VAR_LIST       décalage et aller à l'état 7
+    VAR_NAME_COOR  décalage et aller à l'état 8
+    VAR_NAME_PT    décalage et aller à l'état 9
+    VAR_NAME_LIST  décalage et aller à l'état 10
 
-    input        go to state 11
-    line         go to state 12
-    definition   go to state 13
-    affectation  go to state 14
-    commande     go to state 15
+    input        aller à l'état 11
+    line         aller à l'état 12
+    definition   aller à l'état 13
+    affectation  aller à l'état 14
+    commande     aller à l'état 15
 
 
-state 1
+état 1
 
     7 line: error . EOI EOL
    26 commande: error .
 
-    EOI  shift, and go to state 16
+    EOI  décalage et aller à l'état 16
 
-    $default  reduce using rule 26 (commande)
+    $défaut  réduction par utilisation de la règle 26 (commande)
 
 
-state 2
+état 2
 
    24 commande: DRAW .
 
-    $default  reduce using rule 24 (commande)
+    $défaut  réduction par utilisation de la règle 24 (commande)
 
 
-state 3
+état 3
 
    25 commande: FILL .
 
-    $default  reduce using rule 25 (commande)
+    $défaut  réduction par utilisation de la règle 25 (commande)
 
 
-state 4
+état 4
 
     8 line: EOL .
 
-    $default  reduce using rule 8 (line)
+    $défaut  réduction par utilisation de la règle 8 (line)
 
 
-state 5
+état 5
 
     9 definition: VAR_COOR . list_coor
 
-    VARERROR       shift, and go to state 17
-    VAR_NAME_COOR  shift, and go to state 18
+    VARERROR       décalage et aller à l'état 17
+    VAR_NAME_COOR  décalage et aller à l'état 18
 
-    list_coor  go to state 19
+    list_coor  aller à l'état 19
 
 
-state 6
+état 6
 
    10 definition: VAR_PT . list_pt
 
-    VAR_NAME_PT  shift, and go to state 20
+    VAR_NAME_PT  décalage et aller à l'état 20
 
-    list_pt  go to state 21
+    list_pt  aller à l'état 21
 
 
-state 7
+état 7
 
    11 definition: VAR_LIST . list_list
 
-    VAR_NAME_LIST  shift, and go to state 22
+    VAR_NAME_LIST  décalage et aller à l'état 22
 
-    list_list  go to state 23
+    list_list  aller à l'état 23
 
 
-state 8
+état 8
 
    19 affectation: VAR_NAME_COOR . '=' expr
 
-    '='  shift, and go to state 24
+    '='  décalage et aller à l'état 24
 
 
-state 9
+état 9
 
    21 affectation: VAR_NAME_PT . $@2 '=' point
 
-    $default  reduce using rule 20 ($@2)
+    $défaut  réduction par utilisation de la règle 20 ($@2)
 
-    $@2  go to state 25
+    $@2  aller à l'état 25
 
 
-state 10
+état 10
 
    23 affectation: VAR_NAME_LIST . $@3 '=' liste
 
-    $default  reduce using rule 22 ($@3)
+    $défaut  réduction par utilisation de la règle 22 ($@3)
 
-    $@3  go to state 26
+    $@3  aller à l'état 26
 
 
-state 11
+état 11
 
     0 $accept: input . $end
     1 input: input . line
 
-    $end           shift, and go to state 27
-    error          shift, and go to state 1
-    DRAW           shift, and go to state 2
-    FILL           shift, and go to state 3
-    EOL            shift, and go to state 4
-    VAR_COOR       shift, and go to state 5
-    VAR_PT         shift, and go to state 6
-    VAR_LIST       shift, and go to state 7
-    VAR_NAME_COOR  shift, and go to state 8
-    VAR_NAME_PT    shift, and go to state 9
-    VAR_NAME_LIST  shift, and go to state 10
+    $end           décalage et aller à l'état 27
+    error          décalage et aller à l'état 1
+    DRAW           décalage et aller à l'état 2
+    FILL           décalage et aller à l'état 3
+    EOL            décalage et aller à l'état 4
+    VAR_COOR       décalage et aller à l'état 5
+    VAR_PT         décalage et aller à l'état 6
+    VAR_LIST       décalage et aller à l'état 7
+    VAR_NAME_COOR  décalage et aller à l'état 8
+    VAR_NAME_PT    décalage et aller à l'état 9
+    VAR_NAME_LIST  décalage et aller à l'état 10
 
-    line         go to state 28
-    definition   go to state 13
-    affectation  go to state 14
-    commande     go to state 15
+    line         aller à l'état 28
+    definition   aller à l'état 13
+    affectation  aller à l'état 14
+    commande     aller à l'état 15
 
 
-state 12
+état 12
 
     2 input: line .
 
-    $default  reduce using rule 2 (input)
+    $défaut  réduction par utilisation de la règle 2 (input)
 
 
-state 13
+état 13
 
     5 line: definition . EOI EOL
 
-    EOI  shift, and go to state 29
+    EOI  décalage et aller à l'état 29
 
 
-state 14
+état 14
 
     6 line: affectation . EOI EOL
 
-    EOI  shift, and go to state 30
+    EOI  décalage et aller à l'état 30
 
 
-state 15
+état 15
 
     4 line: commande . $@1 liste EOI EOL
 
-    $default  reduce using rule 3 ($@1)
+    $défaut  réduction par utilisation de la règle 3 ($@1)
 
-    $@1  go to state 31
+    $@1  aller à l'état 31
 
 
-state 16
+état 16
 
     7 line: error EOI . EOL
 
-    EOL  shift, and go to state 32
+    EOL  décalage et aller à l'état 32
 
 
-state 17
+état 17
 
    14 list_coor: VARERROR .
 
-    $default  reduce using rule 14 (list_coor)
+    $défaut  réduction par utilisation de la règle 14 (list_coor)
 
 
-state 18
+état 18
 
    13 list_coor: VAR_NAME_COOR .
 
-    $default  reduce using rule 13 (list_coor)
+    $défaut  réduction par utilisation de la règle 13 (list_coor)
 
 
-state 19
+état 19
 
     9 definition: VAR_COOR list_coor .
    12 list_coor: list_coor . ',' VAR_NAME_COOR
 
-    ','  shift, and go to state 33
+    ','  décalage et aller à l'état 33
 
-    $default  reduce using rule 9 (definition)
+    $défaut  réduction par utilisation de la règle 9 (definition)
 
 
-state 20
+état 20
 
    16 list_pt: VAR_NAME_PT .
 
-    $default  reduce using rule 16 (list_pt)
+    $défaut  réduction par utilisation de la règle 16 (list_pt)
 
 
-state 21
+état 21
 
    10 definition: VAR_PT list_pt .
    15 list_pt: list_pt . ',' VAR_NAME_PT
 
-    ','  shift, and go to state 34
+    ','  décalage et aller à l'état 34
 
-    $default  reduce using rule 10 (definition)
+    $défaut  réduction par utilisation de la règle 10 (definition)
 
 
-state 22
+état 22
 
    18 list_list: VAR_NAME_LIST .
 
-    $default  reduce using rule 18 (list_list)
+    $défaut  réduction par utilisation de la règle 18 (list_list)
 
 
-state 23
+état 23
 
    11 definition: VAR_LIST list_list .
    17 list_list: list_list . ',' VAR_NAME_LIST
 
-    ','  shift, and go to state 35
+    ','  décalage et aller à l'état 35
 
-    $default  reduce using rule 11 (definition)
+    $défaut  réduction par utilisation de la règle 11 (definition)
 
 
-state 24
+état 24
 
    19 affectation: VAR_NAME_COOR '=' . expr
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 40
+    expr  aller à l'état 40
 
 
-state 25
+état 25
 
    21 affectation: VAR_NAME_PT $@2 . '=' point
 
-    '='  shift, and go to state 41
+    '='  décalage et aller à l'état 41
 
 
-state 26
+état 26
 
    23 affectation: VAR_NAME_LIST $@3 . '=' liste
 
-    '='  shift, and go to state 42
+    '='  décalage et aller à l'état 42
 
 
-state 27
+état 27
 
     0 $accept: input $end .
 
-    $default  accept
+    $défaut  accepter
 
 
-state 28
+état 28
 
     1 input: input line .
 
-    $default  reduce using rule 1 (input)
+    $défaut  réduction par utilisation de la règle 1 (input)
 
 
-state 29
+état 29
 
     5 line: definition EOI . EOL
 
-    EOL  shift, and go to state 43
+    EOL  décalage et aller à l'état 43
 
 
-state 30
+état 30
 
     6 line: affectation EOI . EOL
 
-    EOL  shift, and go to state 44
+    EOL  décalage et aller à l'état 44
 
 
-state 31
+état 31
 
     4 line: commande $@1 . liste EOI EOL
 
-    CYCLE          shift, and go to state 45
-    VAR_NAME_PT    shift, and go to state 46
-    VAR_NAME_LIST  shift, and go to state 47
-    '+'            shift, and go to state 48
-    '('            shift, and go to state 49
+    CYCLE          décalage et aller à l'état 45
+    VAR_NAME_PT    décalage et aller à l'état 46
+    VAR_NAME_LIST  décalage et aller à l'état 47
+    '+'            décalage et aller à l'état 48
+    '('            décalage et aller à l'état 49
 
-    liste  go to state 50
-    point  go to state 51
-    cycle  go to state 52
+    liste  aller à l'état 50
+    point  aller à l'état 51
+    cycle  aller à l'état 52
 
 
-state 32
+état 32
 
     7 line: error EOI EOL .
 
-    $default  reduce using rule 7 (line)
+    $défaut  réduction par utilisation de la règle 7 (line)
 
 
-state 33
+état 33
 
    12 list_coor: list_coor ',' . VAR_NAME_COOR
 
-    VAR_NAME_COOR  shift, and go to state 53
+    VAR_NAME_COOR  décalage et aller à l'état 53
 
 
-state 34
+état 34
 
    15 list_pt: list_pt ',' . VAR_NAME_PT
 
-    VAR_NAME_PT  shift, and go to state 54
+    VAR_NAME_PT  décalage et aller à l'état 54
 
 
-state 35
+état 35
 
    17 list_list: list_list ',' . VAR_NAME_LIST
 
-    VAR_NAME_LIST  shift, and go to state 55
+    VAR_NAME_LIST  décalage et aller à l'état 55
 
 
-state 36
+état 36
 
    44 expr: NB .
 
-    $default  reduce using rule 44 (expr)
+    $défaut  réduction par utilisation de la règle 44 (expr)
 
 
-state 37
+état 37
 
    47 expr: VAR_NAME_COOR .
 
-    $default  reduce using rule 47 (expr)
+    $défaut  réduction par utilisation de la règle 47 (expr)
 
 
-state 38
+état 38
 
    46 expr: '-' . expr
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 56
+    expr  aller à l'état 56
 
 
-state 39
+état 39
 
    45 expr: '(' . expr ')'
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 57
+    expr  aller à l'état 57
 
 
-state 40
+état 40
 
    19 affectation: VAR_NAME_COOR '=' expr .
    40 expr: expr . '+' expr
@@ -524,147 +524,147 @@ state 40
    42     | expr . '-' expr
    43     | expr . '/' expr
 
-    '+'  shift, and go to state 58
-    '-'  shift, and go to state 59
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
+    '+'  décalage et aller à l'état 58
+    '-'  décalage et aller à l'état 59
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
 
-    $default  reduce using rule 19 (affectation)
+    $défaut  réduction par utilisation de la règle 19 (affectation)
 
 
-state 41
+état 41
 
    21 affectation: VAR_NAME_PT $@2 '=' . point
 
-    VAR_NAME_PT  shift, and go to state 46
-    '('          shift, and go to state 49
+    VAR_NAME_PT  décalage et aller à l'état 46
+    '('          décalage et aller à l'état 49
 
-    point  go to state 62
+    point  aller à l'état 62
 
 
-state 42
+état 42
 
    23 affectation: VAR_NAME_LIST $@3 '=' . liste
 
-    CYCLE          shift, and go to state 45
-    VAR_NAME_PT    shift, and go to state 46
-    VAR_NAME_LIST  shift, and go to state 47
-    '+'            shift, and go to state 48
-    '('            shift, and go to state 49
+    CYCLE          décalage et aller à l'état 45
+    VAR_NAME_PT    décalage et aller à l'état 46
+    VAR_NAME_LIST  décalage et aller à l'état 47
+    '+'            décalage et aller à l'état 48
+    '('            décalage et aller à l'état 49
 
-    liste  go to state 63
-    point  go to state 51
-    cycle  go to state 52
+    liste  aller à l'état 63
+    point  aller à l'état 51
+    cycle  aller à l'état 52
 
 
-state 43
+état 43
 
     5 line: definition EOI EOL .
 
-    $default  reduce using rule 5 (line)
+    $défaut  réduction par utilisation de la règle 5 (line)
 
 
-state 44
+état 44
 
     6 line: affectation EOI EOL .
 
-    $default  reduce using rule 6 (line)
+    $défaut  réduction par utilisation de la règle 6 (line)
 
 
-state 45
+état 45
 
    38 cycle: CYCLE .
 
-    $default  reduce using rule 38 (cycle)
+    $défaut  réduction par utilisation de la règle 38 (cycle)
 
 
-state 46
+état 46
 
    36 point: VAR_NAME_PT .
 
-    $default  reduce using rule 36 (point)
+    $défaut  réduction par utilisation de la règle 36 (point)
 
 
-state 47
+état 47
 
    34 liste: VAR_NAME_LIST .
 
-    $default  reduce using rule 34 (liste)
+    $défaut  réduction par utilisation de la règle 34 (liste)
 
 
-state 48
+état 48
 
    28 liste: '+' . translation
    32      | '+' . translation SEPARATOR liste
 
-    '('  shift, and go to state 64
+    '('  décalage et aller à l'état 64
 
-    translation  go to state 65
+    translation  aller à l'état 65
 
 
-state 49
+état 49
 
    35 point: '(' . expr ',' expr ')'
    37      | '(' . expr ':' expr ')'
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 66
+    expr  aller à l'état 66
 
 
-state 50
+état 50
 
     4 line: commande $@1 liste . EOI EOL
 
-    EOI  shift, and go to state 67
+    EOI  décalage et aller à l'état 67
 
 
-state 51
+état 51
 
    27 liste: point .
    31      | point . $@4 SEPARATOR liste
 
-    SEPARATOR  reduce using rule 30 ($@4)
-    $default   reduce using rule 27 (liste)
+    SEPARATOR  réduction par utilisation de la règle 30 ($@4)
+    $défaut   réduction par utilisation de la règle 27 (liste)
 
-    $@4  go to state 68
+    $@4  aller à l'état 68
 
 
-state 52
+état 52
 
    29 liste: cycle .
    33      | cycle . SEPARATOR liste
 
-    SEPARATOR  shift, and go to state 69
+    SEPARATOR  décalage et aller à l'état 69
 
-    $default  reduce using rule 29 (liste)
+    $défaut  réduction par utilisation de la règle 29 (liste)
 
 
-state 53
+état 53
 
    12 list_coor: list_coor ',' VAR_NAME_COOR .
 
-    $default  reduce using rule 12 (list_coor)
+    $défaut  réduction par utilisation de la règle 12 (list_coor)
 
 
-state 54
+état 54
 
    15 list_pt: list_pt ',' VAR_NAME_PT .
 
-    $default  reduce using rule 15 (list_pt)
+    $défaut  réduction par utilisation de la règle 15 (list_pt)
 
 
-state 55
+état 55
 
    17 list_list: list_list ',' VAR_NAME_LIST .
 
-    $default  reduce using rule 17 (list_list)
+    $défaut  réduction par utilisation de la règle 17 (list_list)
 
 
-state 56
+état 56
 
    40 expr: expr . '+' expr
    41     | expr . '*' expr
@@ -672,10 +672,10 @@ state 56
    43     | expr . '/' expr
    46     | '-' expr .
 
-    $default  reduce using rule 46 (expr)
+    $défaut  réduction par utilisation de la règle 46 (expr)
 
 
-state 57
+état 57
 
    40 expr: expr . '+' expr
    41     | expr . '*' expr
@@ -683,98 +683,98 @@ state 57
    43     | expr . '/' expr
    45     | '(' expr . ')'
 
-    '+'  shift, and go to state 58
-    '-'  shift, and go to state 59
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
-    ')'  shift, and go to state 70
+    '+'  décalage et aller à l'état 58
+    '-'  décalage et aller à l'état 59
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
+    ')'  décalage et aller à l'état 70
 
 
-state 58
+état 58
 
    40 expr: expr '+' . expr
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 71
+    expr  aller à l'état 71
 
 
-state 59
+état 59
 
    42 expr: expr '-' . expr
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 72
+    expr  aller à l'état 72
 
 
-state 60
+état 60
 
    41 expr: expr '*' . expr
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 73
+    expr  aller à l'état 73
 
 
-state 61
+état 61
 
    43 expr: expr '/' . expr
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 74
+    expr  aller à l'état 74
 
 
-state 62
+état 62
 
    21 affectation: VAR_NAME_PT $@2 '=' point .
 
-    $default  reduce using rule 21 (affectation)
+    $défaut  réduction par utilisation de la règle 21 (affectation)
 
 
-state 63
+état 63
 
    23 affectation: VAR_NAME_LIST $@3 '=' liste .
 
-    $default  reduce using rule 23 (affectation)
+    $défaut  réduction par utilisation de la règle 23 (affectation)
 
 
-state 64
+état 64
 
    39 translation: '(' . expr ',' expr ')'
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 75
+    expr  aller à l'état 75
 
 
-state 65
+état 65
 
    28 liste: '+' translation .
    32      | '+' translation . SEPARATOR liste
 
-    SEPARATOR  shift, and go to state 76
+    SEPARATOR  décalage et aller à l'état 76
 
-    $default  reduce using rule 28 (liste)
+    $défaut  réduction par utilisation de la règle 28 (liste)
 
 
-state 66
+état 66
 
    35 point: '(' expr . ',' expr ')'
    37      | '(' expr . ':' expr ')'
@@ -783,51 +783,51 @@ state 66
    42     | expr . '-' expr
    43     | expr . '/' expr
 
-    '+'  shift, and go to state 58
-    '-'  shift, and go to state 59
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
-    ','  shift, and go to state 77
-    ':'  shift, and go to state 78
+    '+'  décalage et aller à l'état 58
+    '-'  décalage et aller à l'état 59
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
+    ','  décalage et aller à l'état 77
+    ':'  décalage et aller à l'état 78
 
 
-state 67
+état 67
 
     4 line: commande $@1 liste EOI . EOL
 
-    EOL  shift, and go to state 79
+    EOL  décalage et aller à l'état 79
 
 
-state 68
+état 68
 
    31 liste: point $@4 . SEPARATOR liste
 
-    SEPARATOR  shift, and go to state 80
+    SEPARATOR  décalage et aller à l'état 80
 
 
-state 69
+état 69
 
    33 liste: cycle SEPARATOR . liste
 
-    CYCLE          shift, and go to state 45
-    VAR_NAME_PT    shift, and go to state 46
-    VAR_NAME_LIST  shift, and go to state 47
-    '+'            shift, and go to state 48
-    '('            shift, and go to state 49
+    CYCLE          décalage et aller à l'état 45
+    VAR_NAME_PT    décalage et aller à l'état 46
+    VAR_NAME_LIST  décalage et aller à l'état 47
+    '+'            décalage et aller à l'état 48
+    '('            décalage et aller à l'état 49
 
-    liste  go to state 81
-    point  go to state 51
-    cycle  go to state 52
+    liste  aller à l'état 81
+    point  aller à l'état 51
+    cycle  aller à l'état 52
 
 
-state 70
+état 70
 
    45 expr: '(' expr ')' .
 
-    $default  reduce using rule 45 (expr)
+    $défaut  réduction par utilisation de la règle 45 (expr)
 
 
-state 71
+état 71
 
    40 expr: expr . '+' expr
    40     | expr '+' expr .
@@ -835,13 +835,13 @@ state 71
    42     | expr . '-' expr
    43     | expr . '/' expr
 
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
 
-    $default  reduce using rule 40 (expr)
+    $défaut  réduction par utilisation de la règle 40 (expr)
 
 
-state 72
+état 72
 
    40 expr: expr . '+' expr
    41     | expr . '*' expr
@@ -849,13 +849,13 @@ state 72
    42     | expr '-' expr .
    43     | expr . '/' expr
 
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
 
-    $default  reduce using rule 42 (expr)
+    $défaut  réduction par utilisation de la règle 42 (expr)
 
 
-state 73
+état 73
 
    40 expr: expr . '+' expr
    41     | expr . '*' expr
@@ -863,10 +863,10 @@ state 73
    42     | expr . '-' expr
    43     | expr . '/' expr
 
-    $default  reduce using rule 41 (expr)
+    $défaut  réduction par utilisation de la règle 41 (expr)
 
 
-state 74
+état 74
 
    40 expr: expr . '+' expr
    41     | expr . '*' expr
@@ -874,10 +874,10 @@ state 74
    43     | expr . '/' expr
    43     | expr '/' expr .
 
-    $default  reduce using rule 43 (expr)
+    $défaut  réduction par utilisation de la règle 43 (expr)
 
 
-state 75
+état 75
 
    39 translation: '(' expr . ',' expr ')'
    40 expr: expr . '+' expr
@@ -885,101 +885,101 @@ state 75
    42     | expr . '-' expr
    43     | expr . '/' expr
 
-    '+'  shift, and go to state 58
-    '-'  shift, and go to state 59
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
-    ','  shift, and go to state 82
+    '+'  décalage et aller à l'état 58
+    '-'  décalage et aller à l'état 59
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
+    ','  décalage et aller à l'état 82
 
 
-state 76
+état 76
 
    32 liste: '+' translation SEPARATOR . liste
 
-    CYCLE          shift, and go to state 45
-    VAR_NAME_PT    shift, and go to state 46
-    VAR_NAME_LIST  shift, and go to state 47
-    '+'            shift, and go to state 48
-    '('            shift, and go to state 49
+    CYCLE          décalage et aller à l'état 45
+    VAR_NAME_PT    décalage et aller à l'état 46
+    VAR_NAME_LIST  décalage et aller à l'état 47
+    '+'            décalage et aller à l'état 48
+    '('            décalage et aller à l'état 49
 
-    liste  go to state 83
-    point  go to state 51
-    cycle  go to state 52
+    liste  aller à l'état 83
+    point  aller à l'état 51
+    cycle  aller à l'état 52
 
 
-state 77
+état 77
 
    35 point: '(' expr ',' . expr ')'
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 84
+    expr  aller à l'état 84
 
 
-state 78
+état 78
 
    37 point: '(' expr ':' . expr ')'
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 85
+    expr  aller à l'état 85
 
 
-state 79
+état 79
 
     4 line: commande $@1 liste EOI EOL .
 
-    $default  reduce using rule 4 (line)
+    $défaut  réduction par utilisation de la règle 4 (line)
 
 
-state 80
+état 80
 
    31 liste: point $@4 SEPARATOR . liste
 
-    CYCLE          shift, and go to state 45
-    VAR_NAME_PT    shift, and go to state 46
-    VAR_NAME_LIST  shift, and go to state 47
-    '+'            shift, and go to state 48
-    '('            shift, and go to state 49
+    CYCLE          décalage et aller à l'état 45
+    VAR_NAME_PT    décalage et aller à l'état 46
+    VAR_NAME_LIST  décalage et aller à l'état 47
+    '+'            décalage et aller à l'état 48
+    '('            décalage et aller à l'état 49
 
-    liste  go to state 86
-    point  go to state 51
-    cycle  go to state 52
+    liste  aller à l'état 86
+    point  aller à l'état 51
+    cycle  aller à l'état 52
 
 
-state 81
+état 81
 
    33 liste: cycle SEPARATOR liste .
 
-    $default  reduce using rule 33 (liste)
+    $défaut  réduction par utilisation de la règle 33 (liste)
 
 
-state 82
+état 82
 
    39 translation: '(' expr ',' . expr ')'
 
-    NB             shift, and go to state 36
-    VAR_NAME_COOR  shift, and go to state 37
-    '-'            shift, and go to state 38
-    '('            shift, and go to state 39
+    NB             décalage et aller à l'état 36
+    VAR_NAME_COOR  décalage et aller à l'état 37
+    '-'            décalage et aller à l'état 38
+    '('            décalage et aller à l'état 39
 
-    expr  go to state 87
+    expr  aller à l'état 87
 
 
-state 83
+état 83
 
    32 liste: '+' translation SEPARATOR liste .
 
-    $default  reduce using rule 32 (liste)
+    $défaut  réduction par utilisation de la règle 32 (liste)
 
 
-state 84
+état 84
 
    35 point: '(' expr ',' expr . ')'
    40 expr: expr . '+' expr
@@ -987,14 +987,14 @@ state 84
    42     | expr . '-' expr
    43     | expr . '/' expr
 
-    '+'  shift, and go to state 58
-    '-'  shift, and go to state 59
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
-    ')'  shift, and go to state 88
+    '+'  décalage et aller à l'état 58
+    '-'  décalage et aller à l'état 59
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
+    ')'  décalage et aller à l'état 88
 
 
-state 85
+état 85
 
    37 point: '(' expr ':' expr . ')'
    40 expr: expr . '+' expr
@@ -1002,21 +1002,21 @@ state 85
    42     | expr . '-' expr
    43     | expr . '/' expr
 
-    '+'  shift, and go to state 58
-    '-'  shift, and go to state 59
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
-    ')'  shift, and go to state 89
+    '+'  décalage et aller à l'état 58
+    '-'  décalage et aller à l'état 59
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
+    ')'  décalage et aller à l'état 89
 
 
-state 86
+état 86
 
    31 liste: point $@4 SEPARATOR liste .
 
-    $default  reduce using rule 31 (liste)
+    $défaut  réduction par utilisation de la règle 31 (liste)
 
 
-state 87
+état 87
 
    39 translation: '(' expr ',' expr . ')'
    40 expr: expr . '+' expr
@@ -1024,29 +1024,29 @@ state 87
    42     | expr . '-' expr
    43     | expr . '/' expr
 
-    '+'  shift, and go to state 58
-    '-'  shift, and go to state 59
-    '*'  shift, and go to state 60
-    '/'  shift, and go to state 61
-    ')'  shift, and go to state 90
+    '+'  décalage et aller à l'état 58
+    '-'  décalage et aller à l'état 59
+    '*'  décalage et aller à l'état 60
+    '/'  décalage et aller à l'état 61
+    ')'  décalage et aller à l'état 90
 
 
-state 88
+état 88
 
    35 point: '(' expr ',' expr ')' .
 
-    $default  reduce using rule 35 (point)
+    $défaut  réduction par utilisation de la règle 35 (point)
 
 
-state 89
+état 89
 
    37 point: '(' expr ':' expr ')' .
 
-    $default  reduce using rule 37 (point)
+    $défaut  réduction par utilisation de la règle 37 (point)
 
 
-state 90
+état 90
 
    39 translation: '(' expr ',' expr ')' .
 
-    $default  reduce using rule 39 (translation)
+    $défaut  réduction par utilisation de la règle 39 (translation)
