@@ -144,13 +144,13 @@ int existeDansChemin(Liste_chemin, int profondeur, char *varname);
 //return la valeur, -1 si n'existe pas
 Chemin valeurChemin(Liste_chemin, int profondeur, char *varname);
 void afficherChemin(Liste_chemin, int profondeur);
+void dessiner_chemin(char * id);
 
-
-
-Liste_chemin ajouterChemin(Liste_chemin, int profondeur, char* id);
-
-
-
+//////////////////
+/////////IMAGES
+Liste_image ajouterImage(Liste_image, int profondeur, char* id);
+int existeDansImg(Liste_image listeImage, int profondeur, char *varname);
+Image valeurImage(Liste_image listeImage, int profondeur, char *varname);
 
 
 float premierpoint_x;

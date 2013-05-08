@@ -3,6 +3,7 @@
 //est on en train d'affecter une variable ? Si oui, son nom :
 char *nomPointEnAffectation = NULL;
 char *nomCheminEnAffectation = NULL;
+char *nomImageEnAffectation = NULL;
 %}
  /*
  %union {
@@ -36,6 +37,8 @@ char *nomCheminEnAffectation = NULL;
 %token <str> VAR_NAME_COOR
 %token <str> VAR_NAME_PT
 %token <str> VAR_NAME_LIST
+%token <str> VAR_IMG
+%token <str> VAR_NAME_IMG
 %left '+''-'
 %left '*' '/'
 %nonassoc UMINUS
@@ -46,30 +49,36 @@ char *nomCheminEnAffectation = NULL;
 %type <str> translation
 %type <str> cycle
 %%
-	input : input line						{line++;nomCheminEnAffectation = NULL;}
-			| line 							{line++;nomCheminEnAffectation = NULL;}
+	input : input line						{line++;nomCheminEnAffectation = NULL;
+												//printf("%sreinitialisation de nomChemin Enaffectation%s\n", YELLOW,WHITE);
+											}
+			| line 							{line++;nomCheminEnAffectation = NULL;
+												//printf("%sreinitialisation de nomChemin Enaffectation%s\n", YELLOW,WHITE);
+											}
 			;
 	
-	line : commande 						{/*creer liste chaine*/;} liste EOI EOL {/*lire liste chaine*/;}
-			| definition EOI EOL			{printf("%sdefinition termine%s \n", GREEN,WHITE);}
-			| affectation EOI EOL			{printf("%saffectation termine%s \n", GREEN,WHITE);}
-			| error EOI EOL 				{printf("%serreur : ligne mal formee%s\n", RED,WHITE);}
+	line : commande 						{/*creer liste chaine*/;}
+				liste EOI EOL 				{/*lire liste chaine*/;}
+			| definition EOI EOL			{/*printf("%sdefinition termine%s \n", GREEN,WHITE);*/}
+			| affectation EOI EOL			{/*printf("%saffectation termine%s \n", GREEN,WHITE);*/}
+			| error EOI EOL 				{/*printf("%serreur : ligne mal formee%s\n", RED,WHITE);*/}
 			| EOL
 			;
 			
 	definition : VAR_COOR list_coor 		{/*instanciation coor*/}
 				| VAR_PT list_pt 			{/*instanciation pt*/}
 				| VAR_LIST list_list 		{/*instanciation list*/}
+				| VAR_IMG list_img 			{/*instanciation list*/}
 				;
 	
 	list_coor : list_coor ',' VAR_NAME_COOR {
 												/*instanciation coor*/
-												printf("%s<<definition variable coor : %s >>%s\n", BLUE, $3, WHITE);
+												//printf("%s<<definition variable coor : %s >>%s\n", BLUE, $3, WHITE);
 												GlobalListeCoor = ajouterCoor(GlobalListeCoor, profondeur, $3);
 											}
 					|  VAR_NAME_COOR 		{
 												/*instanciation coor*/
-												printf("%s<<definition variable coor : %s >>%s\n", BLUE, $1, WHITE);
+												//printf("%s<<definition variable coor : %s >>%s\n", BLUE, $1, WHITE);
 												GlobalListeCoor = ajouterCoor(GlobalListeCoor, profondeur, $1);
 											}
 					| VARERROR				{
@@ -79,26 +88,26 @@ char *nomCheminEnAffectation = NULL;
 					
 	list_pt : list_pt ',' VAR_NAME_PT 		{
 												/*instanciation pt*/
-												printf("%s<<definition variable pt : %s >>%s\n", BLUE, $3, WHITE);
+												//printf("%s<<definition variable pt : %s >>%s\n", BLUE, $3, WHITE);
 												GlobalListePoint = ajouterPoint(GlobalListePoint, profondeur, $3);
 											}
 					|  VAR_NAME_PT 			{
 												/*instanciation list*/;
-												printf("%s<<definition variable pt : %s >>%s\n", BLUE, $1, WHITE);
+												//printf("%s<<definition variable pt : %s >>%s\n", BLUE, $1, WHITE);
 												GlobalListePoint = ajouterPoint(GlobalListePoint, profondeur, $1);
 											}
 					;
 					
 	list_list : list_list ',' VAR_NAME_LIST {
 												/*instanciation list*/;
-												printf("%s<<definition variable list : %s >>%s\n", BLUE, $3, WHITE);
+												//printf("%s<<definition variable list : %s >>%s\n", BLUE, $3, WHITE);
 												GlobalListeChemin = ajouterChemin(GlobalListeChemin, profondeur, $3);
 												/*printf("%s<<variable liste chemin globale >>%s\n", YELLOW, WHITE);
 												afficherChemins(GlobalListeChemin);			*/									
 											}
 					|  VAR_NAME_LIST 		{
 												/*instanciation list*/;
-												printf("%s<<definition variable list : %s >>%s\n", BLUE, $1, WHITE);
+												//printf("%s<<definition variable list : %s >>%s\n", BLUE, $1, WHITE);
 												GlobalListeChemin = ajouterChemin(GlobalListeChemin, profondeur, $1);
 												/*printf("%s<<variable liste chemin globale >>%s\n", YELLOW, WHITE);
 												afficherChemins(GlobalListeChemin);*/
@@ -107,7 +116,7 @@ char *nomCheminEnAffectation = NULL;
 					
 	affectation : VAR_NAME_COOR '=' expr 	{
 												/*lire liste chaine*/;
-												printf("%s<<affectation variable scal : %f to %s >>%s\n", BLUE, $3, $1, WHITE);
+												//printf("%s<<affectation variable scal : %f to %s >>%s\n", BLUE, $3, $1, WHITE);
 												affecterCoor(GlobalListeCoor, profondeur, $1, $3);
 											}
 				| VAR_NAME_PT 				{
@@ -115,16 +124,16 @@ char *nomCheminEnAffectation = NULL;
 											}
 					'=' point 				{
 												/*lire liste chaine*/;
-												printf("%s<<affectation variable point : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
-												printf("affecter point name debut : %s \n",nomPointEnAffectation);
+												//printf("%s<<affectation variable point : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
+												//printf("affecter point name debut : %s \n",nomPointEnAffectation);
 											}
 				| VAR_NAME_LIST 			{
 												nomCheminEnAffectation = $1;
 											}
 					'=' liste 				{
 												/*lire liste chaine*/;
-												printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
-												printf("affecter chemin name debut : %s \n",nomCheminEnAffectation);
+												//printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
+												//printf("affecter chemin name debut : %s \n",nomCheminEnAffectation);
 											}
 				;
 		
@@ -146,12 +155,14 @@ char *nomCheminEnAffectation = NULL;
 			| '+' translation 
 				SEPARATOR liste				{}
 			| cycle SEPARATOR liste 		{}
-			| VAR_NAME_LIST					{
+			| VAR_NAME_LIST					{		
+													printf("%s<<VAR_NAME_LIST %s detecté>>%s\n", RED,$1,WHITE);
 													if(nomCheminEnAffectation != NULL){
-														printf("%s<<affecterCheminToChemin(%s to %s)>>%s\n", YELLOW,$1,nomCheminEnAffectation,WHITE);
+														//printf("%s<<affecterCheminToChemin(%s to %s)>>%s\n", YELLOW,$1,nomCheminEnAffectation,WHITE);
 														affecterCheminToChemin(GlobalListeChemin, profondeur, $1, nomCheminEnAffectation);
 													}else{
-														//dessiner_chemin($1);
+														printf("%s<<on va dessiner%s>>%s\n", RED,$1,WHITE);
+														dessiner_chemin($1);
 													}
 											}
 			;
@@ -178,7 +189,7 @@ char *nomCheminEnAffectation = NULL;
 													nomPointEnAffectation = NULL;
 												}else{
 													if(nomCheminEnAffectation != NULL){
-														printf("%s<<affecterPointToCheminAvecPoint(%s)>>%s\n", BLUE,nomCheminEnAffectation,$1,WHITE);
+														//printf("%s<<affecterPointToCheminAvecPoint(%s)>>%s\n", BLUE,nomCheminEnAffectation,$1,WHITE);
 														Point p = valeurPoint(GlobalListePoint, profondeur, $1);
 														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation, p->x, p->y);
 													}else{

@@ -391,13 +391,9 @@ int affecterPointToChemin(Liste_chemin listeChemin, int profondeur, char* id, fl
 
 int affecterCheminToChemin(Liste_chemin listeChemin , int profondeur,  char* id, char* id2){
 	Liste_chemin temp = listeChemin;
-	printf("chemin %s to chemin %s\n",id, id2);
     while(temp != NULL)
     {
-    	printf("compare %s to %s \n",temp->chemin->id, id);
-    	printf("compare %s to %s \n",temp, temp->nxt);
     	if (strcmp(temp->chemin->id, id2) == 0){
-    		printf("%schemin %s to chemin %s trouvé%s\n",YELLOW,temp->chemin->id, id2,WHITE);
     		temp->chemin = valeurChemin(listeChemin, profondeur,id);
     		return 1;
         }
@@ -406,7 +402,7 @@ int affecterCheminToChemin(Liste_chemin listeChemin , int profondeur,  char* id,
     return -1;
 }
 
-int existeDansListe(Liste_chemin listeChemin, int profondeur, char *varname){
+int existeDansChemin(Liste_chemin listeChemin, int profondeur, char *varname){
 	Liste_chemin temp = listeChemin;
     while(temp != NULL)
     {
@@ -434,15 +430,14 @@ void afficherChemins(Liste_chemin listeChemin, int profondeur)
 	float x;
 	float y;
 	Liste_chemin temp = listeChemin;
-	int first;
 	while(temp != NULL)
     {
 		id = temp->chemin->id;
 		
-		/*}else{*/
 		Liste_point tempListe = temp->chemin;
 		
 		tempListe = (tempListe->nxt != NULL)?tempListe->nxt:tempListe;
+		//si le premier point est pas initialisé :
 		if(tempListe->point != NULL){
 			printf("%s = \n", temp->chemin->id);
 			while(tempListe != NULL)
@@ -452,13 +447,101 @@ void afficherChemins(Liste_chemin listeChemin, int profondeur)
 				printf("%f , %f \n", x, y);
 				tempListe = tempListe->nxt;
 			}
-		//}
 		}else{
 			printf("%s n'est pas initialisé \n", temp->chemin->id);
 		}
 		temp = temp->nxt;
-		//check for a  segfault
 		
     }
-    
+}
+
+void dessiner_chemin(char * id){
+	Liste_chemin tempChemin = GlobalListeChemin;
+    while(tempChemin != NULL)
+    {
+    	if (strcmp(tempChemin->chemin->id, id) == 0){
+			Liste_point tempListe = tempChemin->chemin;
+		
+			tempListe = (tempListe->nxt != NULL)?tempListe->nxt:tempListe;
+			//si le premier point est pas initialisé :
+			if(tempListe->point != NULL){
+				printf("%s = \n", tempChemin->chemin->id);
+				while(tempListe != NULL)
+				{
+					dessiner_point(tempListe->point->x, tempListe->point->y);
+					printf("dessin de %f , %f \n", tempListe->point->x, tempListe->point->y);
+					tempListe = tempListe->nxt;
+				}
+			}else{
+				printf("%s n'est pas initialisé \n", tempChemin->chemin->id);
+			}
+		}
+		tempChemin = tempChemin->nxt;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+////////FONCTIONS IMAGES /////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+Chemin creer_image(char* id){	
+	struct_image* image;
+	image = malloc(sizeof(Image));
+	image->id = id;
+	image->image = NULL;
+	
+	return image;
+}
+
+Liste_image ajouterImage(Liste_image listeImage, int profondeur, char* id)
+{
+	Image image = creer_image(id);
+	/* On crée un nouvel élément */
+	struct_liste_image* nouvelElement;
+	nouvelElement = malloc(sizeof(Liste_image));
+	/* On assigne la valeur au nouvel élément */
+	nouvelElement->image = image;
+	nouvelElement->profondeur = profondeur;
+	
+	/* On ajoute en fin, donc aucun élément ne va suivre */
+	nouvelElement->nxt = NULL;
+  
+	if(listeImage == NULL)
+    {
+        /* Si la liste est videé il suffit de renvoyer l'élément créé */
+		listeImage = nouvelElement;
+    }
+    else
+    {
+        /* Sinon, on parcourt la liste à l'aide d'un pointeur temporaire et on
+        indique que le dernier élément de la liste est relié au nouvel élément */
+		Liste_image temp = listeImage;
+        while(temp->nxt != NULL)
+        {
+            temp = temp->nxt;
+        }
+        temp->nxt = nouvelElement;
+    }
+    return listeImage;
+}
+
+int existeDansImage(Liste_image listeImage, int profondeur, char *varname){
+	Liste_image temp = listeImage;
+    while(temp != NULL)
+    {
+    	if (strcmp(temp->image->id, varname) == 0)
+    		return 1;
+        temp = temp->nxt;
+    }
+    return 0;
+}
+
+Image valeurImage(Liste_image listeImage, int profondeur, char *varname){
+	Liste_image temp = listeImage;
+    while(temp != NULL)
+    {
+    	if (strcmp(temp->image->id, varname) == 0)
+    		return temp->image;
+        temp = temp->nxt;
+    }
+    return -1;
 }

@@ -56,6 +56,7 @@
 "var_coor" 						{ECHO;BEGIN DECLARATION_COOR;return VAR_COOR;}
 "var_pt" 						{ECHO;BEGIN DECLARATION_PT;return VAR_PT;}
 "var_list" 						{ECHO;BEGIN DECLARATION_LIST;return VAR_LIST;}
+"var_img" 						{ECHO;BEGIN DECLARATION_LIST;return VAR_IMG;}
 
 <DECLARATION_COOR>[,=] 			{ECHO;return yytext[0];}
 <DECLARATION_PT>[(),=] 			{ECHO;return yytext[0];}
@@ -79,7 +80,9 @@ int typeVar(char* varname){
 		return VAR_NAME_COOR;
 	if(existeDansPoint(GlobalListePoint, profondeur, varname) == 1)
 		return VAR_NAME_PT;
-	if(existeDansListe(GlobalListeChemin, profondeur, varname) == 1)
+	if(existeDansChemin(GlobalListeChemin, profondeur, varname) == 1)
+		return VAR_NAME_LIST;
+	if(existeDansImage(GlobalListeImage, profondeur, varname) == 1)
 		return VAR_NAME_LIST;
 	return 0;
 }
