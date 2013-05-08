@@ -41,6 +41,8 @@ chemin = point1--point2--point3;
 //draw (10,80)--point2--(10,60)--cycle--(scal1,100)--(20,100)--cycle--(30,80);
 //draw point1--point2--point3;
 draw chemin;
-image{
+image3 = image{
+draw (10,10)--(30;30)
+}
 image{
 }

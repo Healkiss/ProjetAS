@@ -91,7 +91,8 @@
 
 %%
 int typeVar(char* varname){
-	afficherCoors(GlobalListeCoor, 0);
+	//afficherCoors(GlobalListeCoor, 0);
+	//afficherImages(GlobalListeImage, 0);
 	if(existeDansCoor(GlobalListeCoor, profondeur, varname) == 1)
 		return VAR_NAME_COOR; 
 	if(existeDansPoint(GlobalListePoint, profondeur, varname) == 1)

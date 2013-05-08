@@ -151,7 +151,7 @@ void dessiner_chemin(char * id);
 Liste_image ajouterImage(Liste_image, int profondeur, char* id);
 int existeDansImg(Liste_image listeImage, int profondeur, char *varname);
 Image valeurImage(Liste_image listeImage, int profondeur, char *varname);
-
+void afficherImages(Liste_image listeImage, int profondeur);
 
 float premierpoint_x;
 float premierpoint_y;

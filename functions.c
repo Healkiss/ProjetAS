@@ -529,7 +529,7 @@ Liste_image ajouterImage(Liste_image listeImage, int profondeur, char* id)
 }
 
 int existeDansImage(Liste_image listeImage, int profondeur, char *varname){
-	printf("%s<<image %s existe ? : %s , fin>>%s\n", BLUE, varname, WHITE);
+	//printf("%s<<image %s existe ?>>%s\n", BLUE, varname, WHITE);
 	Liste_image temp = listeImage;
     while(temp != NULL)
     {

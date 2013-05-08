@@ -146,14 +146,14 @@ char *nomImageEnAffectation = NULL;
 												//printf("%s<<definition variable list : %s >>%s\n", BLUE, $3, WHITE);
 												GlobalListeChemin = ajouterChemin(GlobalListeChemin, profondeur, $3);
 												/*printf("%s<<variable liste chemin globale >>%s\n", YELLOW, WHITE);
-												afficherChemins(GlobalListeChemin);			*/									
+												//afficherChemins(GlobalListeChemin);			*/									
 											}
 					|  VAR_NAME_LIST 		{
 												/*instanciation list*/;
 												//printf("%s<<definition variable list : %s >>%s\n", BLUE, $1, WHITE);
 												GlobalListeChemin = ajouterChemin(GlobalListeChemin, profondeur, $1);
 												/*printf("%s<<variable liste chemin globale >>%s\n", YELLOW, WHITE);
-												afficherChemins(GlobalListeChemin);*/
+												//afficherChemins(GlobalListeChemin);*/
 											} 
 					;	
 	list_img : list_img ',' VAR_NAME_IMG	{
@@ -192,23 +192,20 @@ char *nomImageEnAffectation = NULL;
 												//printf("affecter chemin name debut : %s \n",nomCheminEnAffectation);
 											}
 				| VAR_NAME_IMG  			{
-												printf("%saffecter image name debut : %s %s\n",RED, "1", WHITE);
+												printf("%saffecter image %s debut %s\n",RED, $1, WHITE);
 												nomImageEnAffectation = $1;
-												
 											}
-					'=' liste 				{
-												printf("%s<<VAR_NAME_LIST %s detecté>>%s\n", RED,"1",WHITE);
-												//printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
-												//printf("affecter chemin name debut : %s \n",nomCheminEnAffectation);
-											}
+					'=' IMG_BEGIN			{}
 				;
 		
-	/*value : NB {int* value = malloc(sizeof (int)); *value = $1; $$ = value;}
-			| point {char* value = malloc(sizeof (char)); *value = $1; $$ = value;}
-			| liste {char* value = malloc(sizeof (char)); *value = $1; $$ = value;}
-			;*/
-			
-	commande : DRAW 						{draw();}
+	commande : DRAW 						{
+												if(nomImageEnAffectation == NULL){
+													draw();
+												}else{
+													printf("%s<<on ajoute l'instruction %s a l'image %s>>%s\n", RED,"DRAW", nomImageEnAffectation,WHITE);
+													//ajouterInstruction(GlobalListeImage, profondeur, nomImageEnAffectation, "DRAW");
+												}
+											}
 			| FILL 							{draw();}
 			| error							{printf("%serreur de comande%s\n", RED,WHITE);}
 			;
@@ -222,7 +219,7 @@ char *nomImageEnAffectation = NULL;
 				SEPARATOR liste				{}
 			| cycle SEPARATOR liste 		{}
 			| VAR_NAME_LIST					{		
-													printf("%s<<VAR_NAME_LIST %s detecté>>%s\n", RED,$1,WHITE);
+													//printf("%s<<VAR_NAME_LIST %s detecté>>%s\n", RED,$1,WHITE);
 													if(nomCheminEnAffectation != NULL){
 														//printf("%s<<affecterCheminToChemin(%s to %s)>>%s\n", YELLOW,$1,nomCheminEnAffectation,WHITE);
 														affecterCheminToChemin(GlobalListeChemin, profondeur, $1, nomCheminEnAffectation);
@@ -243,24 +240,35 @@ char *nomImageEnAffectation = NULL;
 														printf("%s<<affecterPointToChemin(%s,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
 														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$2, $4);
 													}else{
-														dessiner_point($2, $4);
+														if(nomImageEnAffectation == NULL){
+															printf("%s<<on va dessiner%s>>%s\n", RED,nomImageEnAffectation,WHITE);
+															dessiner_point($2, $4);
+														}else{
+															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", RED, $2, $4, WHITE);
+															//ajouterPointToInstruction(GlobalListeImage, profondeur, nomImageEnAffectation, $2, $4);
+														}
 													}
 												}
 											}
 			| VAR_NAME_PT					{
+												Point p = valeurPoint(GlobalListePoint, profondeur, $1);
 												if(nomPointEnAffectation!= NULL)
 												{
-													Point p = valeurPoint(GlobalListePoint, profondeur, $1);
 													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation, p->x, p->y);
 													nomPointEnAffectation = NULL;
 												}else{
 													if(nomCheminEnAffectation != NULL){
 														//printf("%s<<affecterPointToCheminAvecPoint(%s)>>%s\n", BLUE,nomCheminEnAffectation,$1,WHITE);
-														Point p = valeurPoint(GlobalListePoint, profondeur, $1);
 														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation, p->x, p->y);
 													}else{
-														Point p = valeurPoint(GlobalListePoint, profondeur, $1);
-														dessiner_point(p->x, p->y);
+														if(nomImageEnAffectation == NULL){
+															printf("%s<<on va dessiner%s>>%s\n", RED,$1,WHITE);
+															dessiner_point(p->x, p->y);
+														}else{
+															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", RED,p->x, p->y,WHITE);
+															//ajouterPointToInstruction(GlobalListeImage, profondeur, nomImageEnAffectation, p->x, p->y);
+														}
+
 													}
 												}
 											}
@@ -269,13 +277,19 @@ char *nomImageEnAffectation = NULL;
 										
 												if(nomPointEnAffectation != NULL)
 												{
-													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation,$2, $4);
+													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation,$$[0], $$[1]);
 													nomPointEnAffectation = NULL;
 												}else{
 													if(nomCheminEnAffectation != NULL){
-														printf("%s<<affecterPointToChemin(%s,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
-														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$2, $4);
+														printf("%s<<affecterPointToChemin(%s,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,$$[0], $$[1],WHITE);
+														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$$[0], $$[1]);
 													}else{
+														if(nomImageEnAffectation == NULL){
+															dessiner_point($$[0], $$[1]);
+														}else{
+															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", RED, $$[0], $$[1], WHITE);
+															//ajouterPointToInstruction(GlobalListeImage, profondeur, nomImageEnAffectation, $$[0], $$[1]);
+														}
 														dessiner_point($$[0], $$[1]);
 													}
 												}
@@ -332,13 +346,13 @@ int main(void) {
 	fprintf(fres,"\tcairo_surface_destroy(pdf_surface);\n");
 	fprintf(fres,"\treturn 0;\n}");
 	printf("Nb ligne %d \n", line);
-	printf("variables coordonnee stockees :\n");
+	printf("%svariables coordonnee stockees :%s\n",BLUE,WHITE);
 	afficherCoors(GlobalListeCoor, profondeur);
-	printf("variables point stockees :\n");
+	printf("%svariables point stockees :%s\n",BLUE,WHITE);
 	afficherPoints(GlobalListePoint, profondeur);
-	printf("variables chemin stockees :\n");
+	printf("%svariables chemin stockees :%s\n",BLUE,WHITE);
 	afficherChemins(GlobalListeChemin, profondeur);
-	printf("variables image stockees :\n");
-	afficherImages(GlobalListeChemin, profondeur);
+	printf("%svariables image stockees :%s\n",BLUE,WHITE);
+	afficherImages(GlobalListeImage, profondeur);
 	return EXIT_SUCCESS;
 }
