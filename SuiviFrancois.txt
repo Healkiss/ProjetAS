@@ -63,10 +63,15 @@ rotation (aucune idée de ce qu'il aut faire, commencer par les scalaire et les 
 7/05
 Affectation liste to liste
 scalaire int to float
+Debut de translate, rotate, couleur
 Debut de images
+Ajout des commentaire // et /* */
+Difficultes: Structure trop complqiué, j'ai pas reussi ame mettre a travailler avec des void* qui aurait allegé nos structure, aidant a l'ajout dans les listes par exemple
+Grammaire pas simple,
 
 Il faut faire une seule fonction pour les traitement des points selon l'etat d'affectation ou l'on est
 Reste a faire :
 FIll
 translation, rotate
-comparaison
+comparaisoné
+Couleur, epaisseur du trait.
