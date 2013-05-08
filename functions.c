@@ -125,8 +125,10 @@ int existeDansCoor(Liste_coor listeCoor, int profondeur, char *varname){
     while(temp != NULL)
     {
     	id = temp->coor->id;
+    	//printf("%s comparaison avec %s %s\n",BLUE, id, WHITE);
     	resultat = strcmp(id, varname);
     	if (strcmp(id, varname) == 0){
+    	//	printf("%s retourne 1 %s\n",BLUE, id, WHITE);
     		return 1;
     	}
         temp = temp->nxt;
@@ -494,7 +496,9 @@ Chemin creer_image(char* id){
 
 Liste_image ajouterImage(Liste_image listeImage, int profondeur, char* id)
 {
+	printf("%s<<creation de l'image : %s , debut>>%s\n", BLUE, id, WHITE);
 	Image image = creer_image(id);
+	printf("%s<<creation de l'image : %s , fin>>%s\n", BLUE, id, WHITE);
 	/* On crée un nouvel élément */
 	struct_liste_image* nouvelElement;
 	nouvelElement = malloc(sizeof(Liste_image));
@@ -525,6 +529,7 @@ Liste_image ajouterImage(Liste_image listeImage, int profondeur, char* id)
 }
 
 int existeDansImage(Liste_image listeImage, int profondeur, char *varname){
+	printf("%s<<image %s existe ? : %s , fin>>%s\n", BLUE, varname, WHITE);
 	Liste_image temp = listeImage;
     while(temp != NULL)
     {
@@ -544,4 +549,35 @@ Image valeurImage(Liste_image listeImage, int profondeur, char *varname){
         temp = temp->nxt;
     }
     return -1;
+}
+
+void afficherImages(Liste_image listeImage, int profondeur)
+{
+	char * id;
+	float x;
+	float y;
+	Liste_image temp = listeImage;
+	while(temp != NULL)
+    {
+		id = temp->image->id;
+		
+		Liste_image tempListe = temp->image;
+		
+		tempListe = (tempListe->nxt != NULL)?tempListe->nxt:tempListe;
+		//si le premier point est pas initialisé :
+		if(tempListe->image != NULL){
+			printf("%s = \n", temp->image->id);
+			/*while(tempListe != NULL)
+			{
+				x =  tempListe->point->x;
+				y =  tempListe->point->y;
+				printf("%f , %f \n", x, y);
+				tempListe = tempListe->nxt;
+			}*/
+		}else{
+			printf("%s n'est pas initialisé \n", temp->image->id);
+		}
+		temp = temp->nxt;
+		
+    }
 }

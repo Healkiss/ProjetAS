@@ -28,7 +28,11 @@ char *nomImageEnAffectation = NULL;
 %token DRAW
 %token FILL
 %token CYCLE
+%token TRANSLATE
+%token ROTATE
 %token SEPARATOR
+%token IMG_BEGIN
+%token IMG_END
 %token EOI //end of commande
 %token EOL //end of line
 %token <scal> VAR_COOR
@@ -61,10 +65,49 @@ char *nomImageEnAffectation = NULL;
 				liste EOI EOL 				{/*lire liste chaine*/;}
 			| definition EOI EOL			{/*printf("%sdefinition termine%s \n", GREEN,WHITE);*/}
 			| affectation EOI EOL			{/*printf("%saffectation termine%s \n", GREEN,WHITE);*/}
+			| TRANSLATE point				{
+												//translation
+											}
+			| ROTATE '(' liste 				{
+												//retenir cette liste pour faire les operations dessus plus tard
+											}
+					',' point				{
+												//retenir le centre de cette rotation
+											}
+					',' expr			{	//angle on peut faire les calculs tels que
+												/*float angle = a * M_PI / 180 ;
+												chemin new = creer_chemin() ;
+												chemin_debut(c) ;
+
+												int new_point[2] ;
+
+												int* old_point = valeur_chemin(c) ; 
+
+												new_point[0] = cos(angle) * (old_point[0] - pt[0]) - sin(angle) * (old_point[1] - pt[1]) + pt[0] ; 
+												new_point[1] = sin(angle) * (old_point[0] - pt[0]) + cos(angle) * (old_point[1] - pt[1]) + pt[1] ; 
+
+												chemin_ajouter(new , new_point) ; 
+
+												while( chemin_a_suivant(c) ) { 
+													chemin_suivant(c) ; 
+
+													old_point = chemin_get(c) ;
+
+													new_point[0] = cos(angle) * (old_point[0] - pt[0]) - sin(angle) * (old_point[1] - pt[1]) + pt[0] ; 
+													new_point[1] = sin(angle) * (old_point[0] - pt[0]) + cos(angle) * (old_point[1] - pt[1]) + pt[1] ; 
+
+													chemin_ajouter(new , new_point) ; 
+												}
+												return new;
+												*/
+											}
+			| coloration EOI EOL
 			| error EOI EOL 				{/*printf("%serreur : ligne mal formee%s\n", RED,WHITE);*/}
 			| EOL
 			;
 			
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////DEFINITIONS DE VARIABLES////////////////////////////////////////////////////////////////////////////////////			
 	definition : VAR_COOR list_coor 		{/*instanciation coor*/}
 				| VAR_PT list_pt 			{/*instanciation pt*/}
 				| VAR_LIST list_list 		{/*instanciation list*/}
@@ -113,13 +156,26 @@ char *nomImageEnAffectation = NULL;
 												afficherChemins(GlobalListeChemin);*/
 											} 
 					;	
+	list_img : list_img ',' VAR_NAME_IMG	{
+												printf("%s<<definition variable image : %s >>%s\n", BLUE, "3", WHITE);
+												GlobalListeImage = ajouterImage(GlobalListeImage, profondeur, $3);
+												//affecterImage(GlobalListeCoor, profondeur, $1, $3);
+											}
+					|  VAR_NAME_IMG 		{
+												printf("%s<<definition variable image : %s >>%s\n", BLUE, "1", WHITE);
+												GlobalListeImage = ajouterImage(GlobalListeImage, profondeur, $1);
+											}
+					;
 					
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////AFFECTATIONS DE VARIABLES///////////////////////////////////////////////////////////////////////////////////			
 	affectation : VAR_NAME_COOR '=' expr 	{
 												/*lire liste chaine*/;
-												//printf("%s<<affectation variable scal : %f to %s >>%s\n", BLUE, $3, $1, WHITE);
+												printf("%s<<affectation variable scal : %f to %s >>%s\n", BLUE, $3, $1, WHITE);
 												affecterCoor(GlobalListeCoor, profondeur, $1, $3);
 											}
 				| VAR_NAME_PT 				{
+											//	printf("%snomPointEnAffectation : %s %s\n",YELLOW, "1", WHITE);
 												nomPointEnAffectation = $1;
 											}
 					'=' point 				{
@@ -132,6 +188,16 @@ char *nomImageEnAffectation = NULL;
 											}
 					'=' liste 				{
 												/*lire liste chaine*/;
+												//printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
+												//printf("affecter chemin name debut : %s \n",nomCheminEnAffectation);
+											}
+				| VAR_NAME_IMG  			{
+												printf("%saffecter image name debut : %s %s\n",RED, "1", WHITE);
+												nomImageEnAffectation = $1;
+												
+											}
+					'=' liste 				{
+												printf("%s<<VAR_NAME_LIST %s detecté>>%s\n", RED,"1",WHITE);
 												//printf("%s<<affectation variable liste : %s to %s >>%s\n", BLUE, "3", $1, WHITE);
 												//printf("affecter chemin name debut : %s \n",nomCheminEnAffectation);
 											}
@@ -225,9 +291,7 @@ char *nomImageEnAffectation = NULL;
 			| expr '*' expr					{$$=$1*$3;}
 			| expr '-' expr 				{$$=$1-$3;}
 			| expr '/' expr 				{$$=$1/$3;}
-			| NB 							{
-												$$=$1;
-											}
+			| NB 							{$$=$1;}
 			| '(' expr ')' 					{$$=$2;}
 			| '-' expr %prec UMINUS 		{$$=-$2;}
 			| VAR_NAME_COOR					{	
@@ -240,7 +304,8 @@ char *nomImageEnAffectation = NULL;
 												}
 											}
 			;
-	coloration : SET_COLOR
+	coloration : SET_COLOR '(' expr			{}
+			| expr							{}
 			;
 %%
 
@@ -251,6 +316,7 @@ int main(void) {
 	GlobalListeCoor = NULL;
 	GlobalListePoint = NULL;
 	GlobalListeChemin = NULL;
+	GlobalListeImage = NULL;
 	profondeur = 0;
 	fres = fopen("res.c", "w+r+");
 	fprintf(fres,"#include <cairo.h> \n");
@@ -272,5 +338,7 @@ int main(void) {
 	afficherPoints(GlobalListePoint, profondeur);
 	printf("variables chemin stockees :\n");
 	afficherChemins(GlobalListeChemin, profondeur);
+	printf("variables image stockees :\n");
+	afficherImages(GlobalListeChemin, profondeur);
 	return EXIT_SUCCESS;
 }
