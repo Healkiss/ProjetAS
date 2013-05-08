@@ -12,14 +12,26 @@
 %x DECLARATION_PT
 %x DECLARATION_LIST
 %x COLORATION
+%x COMMENT
+%x STRING
 
 %% 
 
+\" 								{printf("%s",yytext); BEGIN STRING; }
+\/\* 							{BEGIN COMMENT;}
+<COMMENT>\*\/ 					{BEGIN INITIAL;}
+<COMMENT>(.|\n) 				{}
+<STRING>\\\"					ECHO;
+<STRING>\" 						{printf("%s",yytext); BEGIN INITIAL;}
+<STRING>(.|\n) 					ECHO;
+^\/\/.*n 						{} 
+\/\/.*$ 						{}
+
 \n 								{ECHO;return EOL;}
-[0-9]+ 					{
-									ECHO;yylval.val_scal = atoi(strdup(yytext));
-									/*printf	("\n%s<<digit yytext : %s | atof(strdup(yytext)) : %i | yylval.val_scal %i >>%s\n",
-												YELLOW, yytext, atoi(strdup(yytext)), yylval.val_scal, WHITE
+[[:digit:]]+ 					{
+									ECHO; yylval.val_scal = atof(yytext);
+									/*printf	("\n%s<<digit yytext : %s | atof(strdup(yytext)) : %f | yylval.val_scal %f >>%s\n",
+												YELLOW, yytext, atof(strdup(yytext)), yylval.val_scal, WHITE
 											);*/
 									return NB;
 								}
@@ -31,7 +43,7 @@
 ";" 							{ECHO;return EOI;}
 [a-z][a-zA-Z0-9]* 				{ECHO;yylval.str = strdup(yytext);
 									if(!typeVar(strdup(yylval.str))){
-										printf("\n%s<<la variable \"%s\" n'existe pas %s >>%s\n", RED, yylval.str, WHITE);
+										printf("\n%s<<la variable \"%s\" n'existe pas %s >>%s\n", RED, yytext, WHITE);
 										return VARERROR;
 									}else{
 										return typeVar(strdup(yylval.str));

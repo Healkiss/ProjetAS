@@ -17,7 +17,7 @@ char *nomCheminEnAffectation = NULL;
  yylvla.reel=atoi
  */
 %union {
-	int val_scal ;
+	float val_scal ;
 	char *str;
 }
 
@@ -73,7 +73,7 @@ char *nomCheminEnAffectation = NULL;
 												GlobalListeCoor = ajouterCoor(GlobalListeCoor, profondeur, $1);
 											}
 					| VARERROR				{
-												printf("%s<<erreur de definition : %s >>%s\n", RED, WHITE);
+												printf("%s<<erreur de definition >>%s\n", RED, WHITE);
 											}
 					;
 					
@@ -107,7 +107,7 @@ char *nomCheminEnAffectation = NULL;
 					
 	affectation : VAR_NAME_COOR '=' expr 	{
 												/*lire liste chaine*/;
-												printf("%s<<affectation variable scal : %d to %s >>%s\n", BLUE, $3, $1, WHITE);
+												printf("%s<<affectation variable scal : %f to %s >>%s\n", BLUE, $3, $1, WHITE);
 												affecterCoor(GlobalListeCoor, profondeur, $1, $3);
 											}
 				| VAR_NAME_PT 				{
@@ -147,13 +147,12 @@ char *nomCheminEnAffectation = NULL;
 				SEPARATOR liste				{}
 			| cycle SEPARATOR liste 		{}
 			| VAR_NAME_LIST					{
-												//blablablabla
-												//je ne sais pas du tout quoi faire, blablabla
-												//il faudrait pouvoir renvoyer un point de la liste a chaque consultation
-												//mais je sais pas du tout comment mettre ça en oeuvre !!!!!!!!!!!!!!!!!!!
-												//blablablablabla
-												
-												//c'est trop dur ce projet !!!!!!!!!!
+													if(nomCheminEnAffectation != NULL){
+														printf("%s<<affecterCheminToChemin(%s to %s)>>%s\n", YELLOW,$1,nomCheminEnAffectation,WHITE);
+														affecterCheminToChemin(GlobalListeChemin, profondeur, $1, nomCheminEnAffectation);
+													}else{
+														//dessiner_chemin($1);
+													}
 											}
 			;
 		
@@ -164,7 +163,7 @@ char *nomCheminEnAffectation = NULL;
 													nomPointEnAffectation = NULL;
 												}else{
 													if(nomCheminEnAffectation != NULL){
-														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
+														printf("%s<<affecterPointToChemin(%s,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
 														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$2, $4);
 													}else{
 														dessiner_point($2, $4);
@@ -197,7 +196,7 @@ char *nomCheminEnAffectation = NULL;
 													nomPointEnAffectation = NULL;
 												}else{
 													if(nomCheminEnAffectation != NULL){
-														printf("%s<<affecterPointToChemin(%s,%d, %d)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
+														printf("%s<<affecterPointToChemin(%s,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
 														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$2, $4);
 													}else{
 														dessiner_point($$[0], $$[1]);

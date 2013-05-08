@@ -58,3 +58,8 @@ Decalage (translation) (commencé mais pas fini, en tout cas, pas testé)
 rotation (aucune idée de ce qu'il aut faire, commencer par les scalaire et les chemin, on verra les images plus tard)
 
 (IMAGES => trouver une façon de proceder, je n'ai aucune idée de quoi faire ..)
+
+
+7/05
+Affectation liste to liste
+scalaire int to float

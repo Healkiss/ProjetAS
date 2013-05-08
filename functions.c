@@ -5,7 +5,7 @@ void draw()
 	firstPoint = 1;	
 }
 
-void dessiner_point(int x, int y)
+void dessiner_point(float x, float y)
 {
 	if (firstPoint){
 		firstPoint = 0;
@@ -13,10 +13,10 @@ void dessiner_point(int x, int y)
 		premierpoint_y=y;
 		pointprec_x=x;
 		pointprec_y=y;
-		fprintf(fres,"\tcairo_move_to(cr,%d, %d) ;\n", x, y);
+		fprintf(fres,"\tcairo_move_to(cr,%f, %f) ;\n", x, y);
 	}
 	else{
-		fprintf(fres,"\tcairo_line_to(cr,%d, %d);\n", x, y);
+		fprintf(fres,"\tcairo_line_to(cr,%f, %f);\n", x, y);
 		fprintf(fres,"\tcairo_set_line_width(cr, 1.0);\n");
 		pointprec_x=x;
 		pointprec_y=y;
@@ -24,13 +24,13 @@ void dessiner_point(int x, int y)
 
 }
 
-void setColor(int red, int green, int blue, int alpha){
-	fprintf(fres,"\tcairo-set-source-rgba(cr,%d, %d,%d, %d) ;\n", red, green, blue, alpha);
+void setColor(float red, float green, float blue, float alpha){
+	fprintf(fres,"\tcairo-set-source-rgba(cr,%f, %f,%f, %f) ;\n", red, green, blue, alpha);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////FONCTIONS COORDONNES /////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
-Coordonnee creer_coor(char* id, int val){
+Coordonnee creer_coor(char* id, float val){
 	struct_coordonnee* coord;
 	coord = malloc(sizeof(Coordonnee));
 	coord->id = id;
@@ -40,7 +40,7 @@ Coordonnee creer_coor(char* id, int val){
 
 Liste_coor ajouterCoor(Liste_coor listeCoor, int profondeur, char* id)
 {
-	Coordonnee coord = creer_coor(id, 0);
+	Coordonnee coord = creer_coor(id, -1);
 	/* On crée un nouvel élément */
 	struct_liste_coor* nouvelElement;
 	nouvelElement = malloc(sizeof(Liste_coor));
@@ -69,7 +69,7 @@ Liste_coor ajouterCoor(Liste_coor listeCoor, int profondeur, char* id)
     return listeCoor;
 }
 
-int affecterCoor(Liste_coor listeCoor, int profondeur, char* id, int val)
+int affecterCoor(Liste_coor listeCoor, int profondeur, char* id, float val)
 {
 	Liste_coor temp = listeCoor;
 	char * idtmp;
@@ -153,14 +153,14 @@ Coordonnee valeurCoor(Liste_coor listeCoor, int profondeur, char *varname){
 void afficherCoors(Liste_coor listeCoor, int profondeur)
 {
 	char * id;
-	int val;
+	float val;
 	Liste_coor temp = listeCoor;
 	while(temp != NULL)
     {
         /* Si la liste est videé il suffit de renvoyer l'élément créé */
 		id = temp->coor->id;
 		val =  temp->coor->valeur;
-		printf("%s = %d \n", id, val);
+		printf("%s = %f \n", id, val);
 		temp = temp->nxt;
     }
     
@@ -168,7 +168,7 @@ void afficherCoors(Liste_coor listeCoor, int profondeur)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////FONCTIONS POINT //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
-Point creer_point(char* id, int x, int y){
+Point creer_point(char* id, float x, float y){
 	struct_point* point;
 	point = malloc(sizeof(Point));
 	point->id = id;
@@ -209,7 +209,7 @@ Liste_point ajouterPoint(Liste_point listePoint, int profondeur, char* id)
     return listePoint;
 }
 
-int affecterPoint(Liste_point listePoint, int profondeur, char* id, int x, int y)
+int affecterPoint(Liste_point listePoint, int profondeur, char* id, float x, float y)
 {
 	Liste_point temp = listePoint;
 	char * idtmp;
@@ -251,7 +251,7 @@ int affecterPointAvecPoint(Liste_point listePoint, int profondeur, char* id, Poi
 
 
 }
-Liste_point ajouterEtAffecterPoint(Liste_point listePoint, int profondeur, char* id, int x, int y)
+Liste_point ajouterEtAffecterPoint(Liste_point listePoint, int profondeur, char* id, float x, float y)
 {
 	Point point = creer_point(id,x,y);
 	/* On crée un nouvel élément */
@@ -309,8 +309,8 @@ Point valeurPoint(Liste_point listePoint, int profondeur, char *varname){
 void afficherPoints(Liste_point listePoint, int profondeur)
 {
 	char * id;
-	int x;
-	int y;
+	float x;
+	float y;
 	Liste_point temp = listePoint;
 	while(temp != NULL)
     {
@@ -318,7 +318,7 @@ void afficherPoints(Liste_point listePoint, int profondeur)
 		id = temp->point->id;
 		x =  temp->point->x;
 		y =  temp->point->y;
-		printf("%s = %d , %d \n", id, x, y);
+		printf("%s = %f , %f \n", id, x, y);
 		temp = temp->nxt;
     }
     
@@ -367,7 +367,7 @@ Liste_chemin ajouterChemin(Liste_chemin listeChemin, int profondeur, char* id)
     return listeChemin;
 }
 
-int affecterPointToChemin(Liste_chemin listeChemin, int profondeur, char* id, int x, int y)
+int affecterPointToChemin(Liste_chemin listeChemin, int profondeur, char* id, float x, float y)
 {
 	Liste_chemin temp = listeChemin;
 	char * idtmp;
@@ -389,9 +389,25 @@ int affecterPointToChemin(Liste_chemin listeChemin, int profondeur, char* id, in
     return 0;
 }
 
+int affecterCheminToChemin(Liste_chemin listeChemin , int profondeur,  char* id, char* id2){
+	Liste_chemin temp = listeChemin;
+	printf("chemin %s to chemin %s\n",id, id2);
+    while(temp != NULL)
+    {
+    	printf("compare %s to %s \n",temp->chemin->id, id);
+    	printf("compare %s to %s \n",temp, temp->nxt);
+    	if (strcmp(temp->chemin->id, id2) == 0){
+    		printf("%schemin %s to chemin %s trouvé%s\n",YELLOW,temp->chemin->id, id2,WHITE);
+    		temp->chemin = valeurChemin(listeChemin, profondeur,id);
+    		return 1;
+        }
+        temp = temp->nxt;
+    }
+    return -1;
+}
+
 int existeDansListe(Liste_chemin listeChemin, int profondeur, char *varname){
-	Liste_chemin temp = GlobalListeChemin;
-	char * id;
+	Liste_chemin temp = listeChemin;
     while(temp != NULL)
     {
     	if (strcmp(temp->chemin->id, varname) == 0)
@@ -402,8 +418,7 @@ int existeDansListe(Liste_chemin listeChemin, int profondeur, char *varname){
 }
 
 Chemin valeurChemin(Liste_chemin listeChemin, int profondeur, char *varname){
-	Liste_chemin temp = GlobalListeChemin;
-	char * id;
+	Liste_chemin temp = listeChemin;
     while(temp != NULL)
     {
     	if (strcmp(temp->chemin->id, varname) == 0)
@@ -416,23 +431,34 @@ Chemin valeurChemin(Liste_chemin listeChemin, int profondeur, char *varname){
 void afficherChemins(Liste_chemin listeChemin, int profondeur)
 {
 	char * id;
-	int x;
-	int y;
+	float x;
+	float y;
 	Liste_chemin temp = listeChemin;
+	int first;
 	while(temp != NULL)
     {
 		id = temp->chemin->id;
-		printf("%s = \n", temp->chemin->id);
+		
+		/*}else{*/
 		Liste_point tempListe = temp->chemin;
+		
 		tempListe = (tempListe->nxt != NULL)?tempListe->nxt:tempListe;
-		while(tempListe != NULL)
-		{
-			x =  tempListe->point->x;
-			y =  tempListe->point->y;
-			printf("%d , %d \n", x, y);
-			tempListe = tempListe->nxt;
+		if(tempListe->point != NULL){
+			printf("%s = \n", temp->chemin->id);
+			while(tempListe != NULL)
+			{
+				x =  tempListe->point->x;
+				y =  tempListe->point->y;
+				printf("%f , %f \n", x, y);
+				tempListe = tempListe->nxt;
+			}
+		//}
+		}else{
+			printf("%s n'est pas initialisé \n", temp->chemin->id);
 		}
 		temp = temp->nxt;
+		//check for a  segfault
+		
     }
     
 }
