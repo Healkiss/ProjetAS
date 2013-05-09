@@ -224,7 +224,7 @@ char *nomImageEnAffectation = NULL;
 														//printf("%s<<affecterCheminToChemin(%s to %s)>>%s\n", YELLOW,$1,nomCheminEnAffectation,WHITE);
 														affecterCheminToChemin(GlobalListeChemin, profondeur, $1, nomCheminEnAffectation);
 													}else{
-														printf("%s<<on va dessiner %s>>%s\n", YELLOW,$1,WHITE);
+														printf("%s<<on va dessiner un variable chemin %s>>%s\n", YELLOW,$1,WHITE);
 														dessiner_chemin($1);
 													}
 											}
@@ -266,7 +266,7 @@ char *nomImageEnAffectation = NULL;
 														//afficherChemins(GlobalListeChemin, profondeur);
 													}else{
 														if(nomImageEnAffectation == NULL){
-															printf("%s<<on va dessiner%s>>%s\n", RED,$1,WHITE);
+															printf("%s<<on va dessiner%s>>%s\n", YELLOW,$1,WHITE);
 															dessiner_point(p->x, p->y);
 														}else{
 															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", RED,p->x, p->y,nomImageEnAffectation,WHITE);

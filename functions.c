@@ -483,18 +483,19 @@ void dessiner_chemin(char * id){
 	Liste_chemin tempChemin = GlobalListeChemin;
     while(tempChemin != NULL)
     {
-    	if (strcmp(tempChemin->chemin->id, id) == 0 && tempChemin->chemin->profondeur == profondeur){
+    	if (strcmp(tempChemin->chemin->id, id) == 0){
 			Liste_point tempListe = tempChemin->chemin;
-		
+			printf("%s chemin trouve %s\n",YELLOW, WHITE);
 			tempListe = (tempListe->nxt != NULL)?tempListe->nxt:tempListe;
 			//si le premier point est pas initialisé :
 			if(tempListe->point != NULL){
 				printf("%s prof %d = \n", tempChemin->chemin->id, tempChemin->chemin->profondeur);
-				while(tempListe != NULL)
+				Liste_point tempPoint = tempChemin->chemin->chemin;
+				while(tempPoint != NULL)
 				{
-					dessiner_point(tempListe->point->x, tempListe->point->y);
-					printf("dessin de %f , %f \n", tempListe->point->x, tempListe->point->y);
-					tempListe = tempListe->nxt;
+					dessiner_point(tempPoint->point->x, tempPoint->point->y);
+					printf("dessin de %f , %f \n", tempPoint->point->x, tempPoint->point->y);
+					tempPoint = tempPoint->nxt;
 				}
 			}else{
 				printf("%s n'est pas initialisé \n", tempChemin->chemin->id);
