@@ -4,13 +4,13 @@ Valeurs de scalaire negative interdite
 
 Idée de grammaire : (ce que j'ai rajouté)
 
-line : TRANSLATE '(' objet ',' point '--' point ')'
+line : TRANSLATE '(' objet ',' point '--' point ')' // lit le tableau objet et pour chaque point le déplace avec le vecteur de translation /!\ possibilité d'erreur de sortir du cadre ... :/
 	| ROTATE '(' objet ',' point ',' expr ')'
 	| image
 	;
 
-objet : point
-	| liste 
+objet : point // renvoie un tableau avec juste un point
+	| liste // renvoie un tableau avec les points
 	| image
 	;
 
