@@ -24,12 +24,12 @@ FILE *fres;
 //type coordonnée, un float : "1"
 typedef struct {
 	char* id;
+	int profondeur;
 	float valeur;
 }struct_coordonnee;
 typedef struct_coordonnee* Coordonnee;
 //type liste simplement chainée de coordonnées
 typedef struct{
-	int profondeur;
     Coordonnee coor;
     struct struct_liste_coor *nxt;
 }struct_liste_coor;
@@ -42,13 +42,13 @@ Liste_coor GlobalListeCoor;
 //type point, un couple de float : "(0,10)"
 typedef struct {
 	char* id;
+	int profondeur;
 	float x;
 	float y;
 }struct_point;
 typedef struct_point* Point;
 //type liste simplement chainée de points
 typedef struct{
-	int profondeur;
     Point point;
     struct struct_liste_point *nxt;
 }struct_liste_point;
@@ -62,13 +62,13 @@ Liste_point GlobalListePoint;
 typedef struct
 {
 	char* id;
+	int profondeur;
     Liste_point chemin;
 }struct_chemin;
 typedef struct_chemin* Chemin;
 //type chemin simplement chainée de listes
 typedef struct
 {
-	float profondeur;
 	Chemin chemin;
 	struct struct_liste_chemin *nxt;
 }struct_liste_chemin;
@@ -95,12 +95,12 @@ typedef struct_liste_instruction* Liste_instruction;
 typedef struct
 {
 	char* id;
+	int profondeur;
     Liste_instruction image;
 }struct_image;
 typedef struct_image* Image;
 typedef struct
 {
-	int profondeur;
 	Image image;
 	struct struct_liste_image *nxt;
 }struct_liste_image;
@@ -111,7 +111,7 @@ Liste_image GlobalListeImage;
 /////////////////////////////////////////////////////
 ////////////////
 /////////SCALAIRES
-Coordonnee creer_coor(char* id, float val);
+Coordonnee creer_coor(char* id, int profondeur, float val);
 Liste_coor ajouterCoor(Liste_coor, int profondeur, char* id);
 //return 1 si la variable id existe, -1 sinon
 int affecterCoor(Liste_coor listeCoor, int profondeur, char* id, float val);
@@ -123,7 +123,7 @@ void afficherCoors(Liste_coor listeCoor, int profondeur);
 
 ////////////////
 /////////POINTS
-Point creer_point(char*, float, float);
+Point creer_point(char*, int profondeur, float, float);
 Liste_point ajouterPoint(Liste_point, int profondeur,  char*);
 //return 1 si la variable id existe, -1 sinon
 int affecterPoint(Liste_point, int profondeur, char* id, float x, float y);
@@ -135,6 +135,7 @@ void afficherPoints(Liste_point, int profondeur);
 
 ////////////////
 /////////CHEMINS
+Chemin creer_chemin(char* id, int profondeur);
 Liste_chemin ajouterChemin(Liste_chemin, int profondeur, char* id);
 //affecter chemin id to chemin id2
 int affecterCheminToChemin(Liste_chemin, int profondeur,  char* id, char* id2);
@@ -148,6 +149,7 @@ void dessiner_chemin(char * id);
 
 //////////////////
 /////////IMAGES
+Chemin creer_image(char* id, int profondeur);
 Liste_image ajouterImage(Liste_image, int profondeur, char* id);
 int existeDansImg(Liste_image listeImage, int profondeur, char *varname);
 Image valeurImage(Liste_image listeImage, int profondeur, char *varname);

@@ -224,7 +224,7 @@ char *nomImageEnAffectation = NULL;
 														//printf("%s<<affecterCheminToChemin(%s to %s)>>%s\n", YELLOW,$1,nomCheminEnAffectation,WHITE);
 														affecterCheminToChemin(GlobalListeChemin, profondeur, $1, nomCheminEnAffectation);
 													}else{
-														printf("%s<<on va dessiner%s>>%s\n", RED,$1,WHITE);
+														printf("%s<<on va dessiner %s>>%s\n", YELLOW,$1,WHITE);
 														dessiner_chemin($1);
 													}
 											}
@@ -237,14 +237,16 @@ char *nomImageEnAffectation = NULL;
 													nomPointEnAffectation = NULL;
 												}else{
 													if(nomCheminEnAffectation != NULL){
-														printf("%s<<affecterPointToChemin(%s,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,$2,$4,WHITE);
+														//printf("%s<<projet.y affecterPointToChemin(%s,%d,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,profondeur, $2,$4,WHITE);
 														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$2, $4);
+														//printf("%svariables chemin stockees :%s\n",BLUE,WHITE);
+														afficherChemins(GlobalListeChemin, profondeur);
 													}else{
 														if(nomImageEnAffectation == NULL){
-															printf("%s<<on va dessiner%s>>%s\n", RED,nomImageEnAffectation,WHITE);
+															printf("%s<<on va dessine r%f %f>>%s\n", YELLOW,$2, $4,WHITE);
 															dessiner_point($2, $4);
 														}else{
-															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", RED, $2, $4, WHITE);
+															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", YELLOW, $2, $4,nomImageEnAffectation, WHITE);
 															//ajouterPointToInstruction(GlobalListeImage, profondeur, nomImageEnAffectation, $2, $4);
 														}
 													}
@@ -258,14 +260,16 @@ char *nomImageEnAffectation = NULL;
 													nomPointEnAffectation = NULL;
 												}else{
 													if(nomCheminEnAffectation != NULL){
-														//printf("%s<<affecterPointToCheminAvecPoint(%s)>>%s\n", BLUE,nomCheminEnAffectation,$1,WHITE);
+														//printf("%s<<projet.y affecterPointToCheminAvecPoint(%s to %s)>>%s\n", BLUE,nomCheminEnAffectation,$1,WHITE);
 														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation, p->x, p->y);
+														//printf("%svariables chemin stockees :%s\n",BLUE,WHITE);
+														//afficherChemins(GlobalListeChemin, profondeur);
 													}else{
 														if(nomImageEnAffectation == NULL){
 															printf("%s<<on va dessiner%s>>%s\n", RED,$1,WHITE);
 															dessiner_point(p->x, p->y);
 														}else{
-															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", RED,p->x, p->y,WHITE);
+															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", RED,p->x, p->y,nomImageEnAffectation,WHITE);
 															//ajouterPointToInstruction(GlobalListeImage, profondeur, nomImageEnAffectation, p->x, p->y);
 														}
 
@@ -273,24 +277,27 @@ char *nomImageEnAffectation = NULL;
 												}
 											}
 			| '(' expr ':' expr ')' 		{
-												$$[0] = $2 * cos($4) ; $$[1] = $2 * sin($4);
+												double x = $2 * cos($4) ;
+												double y = $2 * sin($4);
 										
 												if(nomPointEnAffectation != NULL)
 												{
-													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation,$$[0], $$[1]);
+													affecterPoint(GlobalListePoint, profondeur, nomPointEnAffectation,x, y);
 													nomPointEnAffectation = NULL;
 												}else{
 													if(nomCheminEnAffectation != NULL){
-														printf("%s<<affecterPointToChemin(%s,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,$$[0], $$[1],WHITE);
-														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,$$[0], $$[1]);
+														//printf("%s<<affecterPointToChemin(%s,%f, %f)>>%s\n", BLUE,nomCheminEnAffectation,x, y,WHITE);
+														affecterPointToChemin(GlobalListeChemin, profondeur, nomCheminEnAffectation,x, y);
+													 	//printf("%svariables chemin stockees :%s\n",BLUE,WHITE);
+														//afficherChemins(GlobalListeChemin, profondeur);
 													}else{
 														if(nomImageEnAffectation == NULL){
-															dessiner_point($$[0], $$[1]);
+															dessiner_point(x, y);
 														}else{
-															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", RED, $$[0], $$[1], WHITE);
+															printf("%s<<on ajoute le point %f %f a l'image %s>>%s\n", YELLOW, x, y,nomImageEnAffectation, WHITE);
 															//ajouterPointToInstruction(GlobalListeImage, profondeur, nomImageEnAffectation, $$[0], $$[1]);
 														}
-														dessiner_point($$[0], $$[1]);
+														dessiner_point(x, y);
 													}
 												}
 											} /*coordonnée polaires*/

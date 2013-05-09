@@ -51,10 +51,10 @@
 [a-z][a-zA-Z0-9]* 				{ECHO;yylval.str = strdup(yytext);
 									int type = typeVar(strdup(yylval.str));
 									if(!type){
-										printf("\n%s<<la variable \"%s\" n'existe pas %s >>%s\n", RED, yytext, WHITE);
+										printf("\n%s<<la variable \"%s\" n'existe pas>>%s\n", RED, yytext, WHITE);
 										return VARERROR;
 									}else{
-										//printf("\n%s<<variable \"%i\" existe %s >>%s\n", RED, type, WHITE);
+										//printf("\n%s<<variable \"%d\" existe >>%s\n", RED, type, WHITE);
 										return type;
 									}
 								}

@@ -1,4 +1,4 @@
-/*var_coor i,j,x,y;
+var_coor i,j,x,y;
 i=1;
 j=3+i;
 x = j;
@@ -8,8 +8,8 @@ p2=p;
 p1=(20,100);
 var_list lp, lp2;
 var_list lp3;
-lp=p--(20,100);
-lp=(1,110)--(20,100);
+lp=p--(20,110);
+lp=(1,110)--(20,120);
 lp2=(2,200)--(21,210);
 
 lp3=(3,300)--(31,310);
@@ -22,7 +22,7 @@ y=580;
 lp3=(3,320)--(31,330);
 //draw (10,80)--(20,70)--(10,60)--cycle--(0,100)--(20,100)--cycle--(30,80);
 SET_COLOR 12,12,12,1;
-*/
+
 //var_img image1 , image2;
 var_img image3;
 var_coor scal1, scal2, scal3, scal4;
