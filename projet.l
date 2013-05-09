@@ -46,8 +46,8 @@
 "cycle" 						{ECHO;return CYCLE;}
 ";" 							{ECHO;return EOI;}
 
-"image{" 						{ECHO;BEGIN IMAGE; profondeur++; printf("%s profondeur %i %s\n",BLUE,profondeur,WHITE);return IMG_BEGIN;}
-<IMAGE>"}"						{ECHO;BEGIN INITIAL; profondeur--; printf("%s profondeur %i %s \n",BLUE, profondeur, WHITE);return IMG_END;}
+"image{" 						{ECHO;BEGIN IMAGE; profondeur++; printf("%s profondeur %i %s\n",BLUE,profondeur,WHITE);return IMAGE;}
+<IMAGE>"}"						{ECHO;BEGIN INITIAL; profondeur--; printf("%s profondeur %i %s \n",BLUE, profondeur, WHITE);return yytext[0];}
 [a-z][a-zA-Z0-9]* 				{ECHO;yylval.str = strdup(yytext);
 									int type = typeVar(strdup(yylval.str));
 									if(!type){

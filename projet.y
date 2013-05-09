@@ -65,10 +65,10 @@ char *nomImageEnAffectation = NULL;
 				liste EOI EOL 				{/*lire liste chaine*/;}
 			| definition EOI EOL			{/*printf("%sdefinition termine%s \n", GREEN,WHITE);*/}
 			| affectation EOI EOL			{/*printf("%saffectation termine%s \n", GREEN,WHITE);*/}
-			| TRANSLATE point				{
+			| TRANSLATE '(' objet ',' point '--' point ')'				{
 												//translation
 											}
-			| ROTATE '(' liste 				{
+			| ROTATE '(' objet 				{
 												//retenir cette liste pour faire les operations dessus plus tard
 											}
 					',' point				{
@@ -102,6 +102,7 @@ char *nomImageEnAffectation = NULL;
 												*/
 											}
 			| coloration EOI EOL
+			| image
 			| error EOI EOL 				{/*printf("%serreur : ligne mal formee%s\n", RED,WHITE);*/}
 			| EOL
 			;
@@ -209,6 +210,13 @@ char *nomImageEnAffectation = NULL;
 			| FILL 							{draw();}
 			| error							{printf("%serreur de comande%s\n", RED,WHITE);}
 			;
+	
+	image : IMAGE input '}' ;
+
+	objet : point
+		| liste
+		| image 
+		;
 	
 	liste : point 							{$$ = $1;}
 			| '+' translation 				{$$ = $2;}
